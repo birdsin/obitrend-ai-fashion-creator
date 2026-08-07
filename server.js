@@ -11,7 +11,7 @@ const upload = multer({
   limits: { fileSize: 12 * 1024 * 1024 }
 });
 
-app.use(express.static("public"));
+app.use(express.static("."));
 
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, app: "OBITREND AI Fashion Creator" });
