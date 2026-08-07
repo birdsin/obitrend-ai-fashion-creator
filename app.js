@@ -6,7 +6,7 @@ $("garment").addEventListener("change",()=>{
   if(!file)return;
   $("fileLabel").textContent=file.name;
   $("preview").src=URL.createObjectURL(file);
-  $("preview").classList.remove("hidden");
+$("preview").classList.remove("preview-hidden");
 });
 
 $("generate").addEventListener("click",async()=>{
