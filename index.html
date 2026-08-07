@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OBITREND AI Fashion Creator</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <div class="brand"><b>O</b><span>OBITREND</span><small>AI FASHION CREATOR</small></div>
+  <span id="status">● Ready</span>
+</header>
+<main>
+  <section class="hero">
+    <p>CREATE • STYLE • SELL</p>
+    <h1>Turn clothing photos into fashion campaigns.</h1>
+    <span>Upload a garment, choose your creative direction, and generate a photorealistic fashion image.</span>
+  </section>
+
+  <div class="layout">
+    <aside class="panel">
+      <h2>Fashion setup</h2>
+      <label class="upload">
+        <input id="garment" type="file" accept="image/png,image/jpeg,image/webp">
+        <strong id="fileLabel">＋ Upload clothing photo</strong>
+        <small>PNG, JPG or WEBP · max 12 MB</small>
+      </label>
+      <img id="preview" class="preview hidden" alt="Garment preview">
+
+      <label>Model<select id="model">
+        <option>Elegant adult woman</option><option>Curvy adult woman</option>
+        <option>Adult man</option><option>Studio mannequin</option>
+      </select></label>
+
+      <label>Background<select id="background">
+        <option>Luxury fashion studio</option><option>Dubai luxury setting</option>
+        <option>Modern restaurant</option><option>Luxury hotel</option>
+        <option>City street</option><option>Clean e-commerce backdrop</option>
+      </select></label>
+
+      <label>Pose<select id="pose">
+        <option>Standing editorial pose</option><option>Walking pose</option>
+        <option>Seated lifestyle pose</option><option>Two-pose campaign</option>
+      </select></label>
+
+      <label>Style<select id="style">
+        <option>Luxury</option><option>Streetwear</option><option>Minimal</option>
+        <option>Editorial</option><option>Commercial e-commerce</option>
+      </select></label>
+
+      <label>Extra instructions<textarea id="extra" placeholder="Keep the garment exactly the same and make the image premium and realistic."></textarea></label>
+      <button id="generate">✨ Generate fashion image</button>
+      <p class="note">The API key belongs on the server only.</p>
+    </aside>
+
+    <section class="panel result">
+      <div class="result-head">
+        <div><p>AI CANVAS</p><h2>Your result</h2></div>
+        <button id="download" disabled>Download</button>
+      </div>
+      <div id="canvas" class="canvas">
+        <div><strong>✦</strong><h3>Ready for your garment</h3><p>Your generated image will appear here.</p></div>
+      </div>
+    </section>
+  </div>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
