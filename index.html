@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>OBITREND AI Fashion Creator</title>
-
-  <link rel="stylesheet" href="styles.css">
+  <title>OBITREND — AI Fashion Studio</title>
 
   <style>
     * {
@@ -17,22 +15,24 @@
 
     :root {
       --gold: #d8b36a;
-      --gold-light: #f4d99a;
+      --gold2: #f3d48b;
       --black: #070707;
       --dark: #101010;
       --card: #151515;
+      --card2: #1c1c1c;
+      --white: #ffffff;
+      --muted: #a8a8a8;
       --border: rgba(255,255,255,.10);
-      --text: #f7f3eb;
-      --muted: #aaa;
+      --success: #67e8a5;
     }
 
     body {
       min-height: 100vh;
       background:
         radial-gradient(circle at 80% 0%, rgba(216,179,106,.15), transparent 30%),
-        radial-gradient(circle at 0% 40%, rgba(255,255,255,.04), transparent 30%),
+        radial-gradient(circle at 0% 70%, rgba(255,255,255,.04), transparent 30%),
         var(--black);
-      color: var(--text);
+      color: var(--white);
       font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -43,169 +43,243 @@
       font: inherit;
     }
 
+    button {
+      cursor: pointer;
+    }
+
+    /* HEADER */
+
     header {
       position: sticky;
       top: 0;
-      z-index: 20;
+      z-index: 100;
+      height: 72px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 18px 6%;
+      justify-content: space-between;
+      padding: 0 5%;
       background: rgba(7,7,7,.88);
       backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border);
     }
 
-    .brand {
+    .logo {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      font-size: 21px;
     }
 
-    .brand-mark {
+    .logo-mark {
       width: 42px;
       height: 42px;
-      display: grid;
-      place-items: center;
       border: 1px solid var(--gold);
       border-radius: 50%;
-      color: var(--gold-light);
-      font-size: 17px;
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-size: 19px;
+      font-weight: 900;
     }
 
-    .brand small {
+    .logo-name {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .logo-sub {
       display: block;
-      margin-top: 3px;
+      color: var(--gold);
       font-size: 8px;
       letter-spacing: 3px;
-      color: var(--gold);
+      margin-top: 2px;
     }
 
-    #status {
-      padding: 8px 13px;
-      border-radius: 30px;
-      border: 1px solid rgba(216,179,106,.3);
-      color: var(--gold-light);
-      font-size: 12px;
-      background: rgba(216,179,106,.08);
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
     }
 
-    main {
-      width: min(1180px, 92%);
-      margin: auto;
-      padding: 55px 0 80px;
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 12px var(--success);
     }
+
+    /* HERO */
 
     .hero {
       text-align: center;
-      padding: 25px 0 50px;
+      padding: 70px 20px 45px;
+      max-width: 950px;
+      margin: auto;
     }
 
     .eyebrow {
-      color: var(--gold);
-      font-size: 12px;
-      letter-spacing: 4px;
-      font-weight: bold;
-      margin-bottom: 18px;
+      display: inline-block;
+      color: var(--gold2);
+      border: 1px solid rgba(216,179,106,.35);
+      background: rgba(216,179,106,.07);
+      padding: 8px 15px;
+      border-radius: 30px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      margin-bottom: 22px;
     }
 
     .hero h1 {
-      max-width: 850px;
-      margin: auto;
-      font-family: Georgia, serif;
-      font-size: clamp(42px, 8vw, 82px);
+      font-size: clamp(38px, 7vw, 76px);
       line-height: .98;
-      font-weight: 500;
-      background: linear-gradient(120deg, #fff, var(--gold-light), #fff);
-      -webkit-background-clip: text;
-      color: transparent;
+      letter-spacing: -3px;
+      margin-bottom: 20px;
     }
 
-    .hero span {
-      display: block;
-      max-width: 650px;
-      margin: 24px auto 0;
+    .hero h1 span {
+      color: var(--gold);
+    }
+
+    .hero p {
       color: var(--muted);
+      max-width: 650px;
+      margin: auto;
       font-size: 16px;
       line-height: 1.7;
     }
 
-    .badge-row {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 25px;
+    /* MAIN */
+
+    main {
+      width: 90%;
+      max-width: 1250px;
+      margin: auto;
+      padding-bottom: 80px;
     }
 
-    .badge {
-      padding: 8px 13px;
-      border: 1px solid var(--border);
-      border-radius: 30px;
-      color: #ddd;
-      background: rgba(255,255,255,.03);
-      font-size: 12px;
-    }
-
-    .layout {
+    .studio {
       display: grid;
       grid-template-columns: 390px 1fr;
-      gap: 25px;
+      gap: 22px;
       align-items: start;
     }
 
     .panel {
-      background: linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.025));
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.05), rgba(255,255,255,.015)),
+        var(--card);
       border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 25px 70px rgba(0,0,0,.35);
+      border-radius: 22px;
+      padding: 25px;
+      box-shadow: 0 25px 70px rgba(0,0,0,.25);
     }
 
     .panel-title {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
 
-    .panel h2 {
-      font-family: Georgia, serif;
-      font-size: 24px;
-      font-weight: 500;
+    .panel-title h2 {
+      font-size: 20px;
     }
 
-    .number {
+    .step {
       color: var(--gold);
       font-size: 11px;
       letter-spacing: 2px;
     }
 
-    label {
+    /* UPLOAD */
+
+    .upload {
+      border: 1px dashed rgba(216,179,106,.55);
+      border-radius: 18px;
+      padding: 30px 18px;
+      text-align: center;
+      background: rgba(216,179,106,.035);
+      transition: .25s;
+    }
+
+    .upload:hover {
+      background: rgba(216,179,106,.08);
+      border-color: var(--gold);
+    }
+
+    .upload-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      margin: auto auto 15px;
+      display: grid;
+      place-items: center;
+      background: rgba(216,179,106,.12);
+      color: var(--gold);
+      font-size: 27px;
+    }
+
+    .upload strong {
       display: block;
-      margin: 18px 0;
-      color: #ddd;
+      margin-bottom: 7px;
+    }
+
+    .upload small {
+      color: var(--muted);
+      display: block;
+      line-height: 1.5;
+    }
+
+    #garment {
+      display: none;
+    }
+
+    .upload-btn {
+      display: inline-block;
+      margin-top: 17px;
+      padding: 11px 18px;
+      border-radius: 10px;
+      background: var(--gold);
+      color: #080808;
+      font-weight: 800;
       font-size: 13px;
     }
 
-    label > span {
+    #preview {
+      width: 100%;
+      max-height: 250px;
+      object-fit: contain;
+      margin-top: 18px;
+      border-radius: 14px;
+      display: none;
+    }
+
+    /* FORM */
+
+    .field {
+      margin-top: 19px;
+    }
+
+    .field label {
       display: block;
+      color: #ddd;
+      font-size: 12px;
+      font-weight: 700;
       margin-bottom: 8px;
-      color: var(--gold-light);
-      font-weight: bold;
+      letter-spacing: .3px;
     }
 
     select,
     textarea {
       width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      background: #0b0b0b;
       color: white;
-      padding: 14px;
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px;
       outline: none;
     }
 
@@ -215,262 +289,263 @@
     }
 
     textarea {
-      min-height: 90px;
       resize: vertical;
+      min-height: 90px;
+      line-height: 1.5;
     }
 
-    .upload {
-      display: block;
-      border: 1px dashed rgba(216,179,106,.55);
-      border-radius: 18px;
-      padding: 25px 15px;
-      text-align: center;
-      cursor: pointer;
-      background: rgba(216,179,106,.04);
-      transition: .25s;
-    }
+    /* GENERATE */
 
-    .upload:hover {
-      background: rgba(216,179,106,.10);
-      transform: translateY(-2px);
-    }
-
-    .upload-icon {
-      font-size: 34px;
-      margin-bottom: 10px;
-    }
-
-    .upload strong {
-      display: block;
-      color: white;
-      margin-bottom: 6px;
-    }
-
-    .upload small {
-      color: var(--muted);
-    }
-
-    #garment {
-      display: none;
-    }
-
-    .preview-wrap {
-      margin-top: 15px;
-      border-radius: 17px;
-      overflow: hidden;
-      background: #090909;
-      border: 1px solid var(--border);
-    }
-
-    #preview {
-      display: block;
+    .generate {
       width: 100%;
-      max-height: 270px;
-      object-fit: contain;
-    }
-
-    .preview-hidden {
-      display: none !important;
-    }
-
-    .generate-btn {
-      width: 100%;
+      margin-top: 23px;
       border: 0;
-      border-radius: 15px;
-      padding: 17px;
-      margin-top: 12px;
-      cursor: pointer;
+      border-radius: 13px;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--gold2), var(--gold));
       color: #090909;
-      background: linear-gradient(135deg, var(--gold-light), var(--gold));
       font-weight: 900;
-      letter-spacing: 1px;
+      letter-spacing: .5px;
       transition: .25s;
-      box-shadow: 0 12px 35px rgba(216,179,106,.18);
     }
 
-    .generate-btn:hover {
+    .generate:hover {
       transform: translateY(-2px);
-      box-shadow: 0 16px 45px rgba(216,179,106,.3);
+      box-shadow: 0 12px 30px rgba(216,179,106,.20);
     }
 
-    .result {
-      min-height: 650px;
-      display: flex;
-      flex-direction: column;
+    .generate:disabled {
+      opacity: .55;
+      cursor: wait;
+      transform: none;
+    }
+
+    .security {
+      text-align: center;
+      color: #777;
+      font-size: 10px;
+      margin-top: 12px;
+    }
+
+    /* RESULT */
+
+    .result-panel {
+      min-height: 680px;
     }
 
     .result-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 15px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .result-head h2 {
-      font-family: Georgia, serif;
-      font-size: 28px;
-      font-weight: 500;
+      font-size: 20px;
     }
 
-    #download {
+    .badge {
       border: 1px solid var(--border);
-      background: transparent;
-      color: white;
-      border-radius: 10px;
-      padding: 9px 13px;
-      cursor: pointer;
-    }
-
-    #download:not(:disabled):hover {
-      border-color: var(--gold);
-      color: var(--gold-light);
+      color: var(--gold);
+      padding: 7px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      letter-spacing: 1px;
     }
 
     .canvas {
-      flex: 1;
-      min-height: 560px;
-      border: 1px dashed rgba(255,255,255,.13);
-      border-radius: 20px;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
+      min-height: 570px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
       background:
-        linear-gradient(135deg, rgba(255,255,255,.025), transparent),
-        #090909;
+        radial-gradient(circle at 50% 20%, rgba(216,179,106,.08), transparent 30%),
+        #0b0b0b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
     }
 
-    #canvas img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-    }
-
-    .empty-state {
+    .empty {
       text-align: center;
-      padding: 40px;
-      color: var(--muted);
+      padding: 35px;
+      max-width: 450px;
     }
 
     .empty-icon {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 20px;
+      width: 75px;
+      height: 75px;
+      margin: auto auto 20px;
       border: 1px solid rgba(216,179,106,.35);
-      border-radius: 50%;
+      border-radius: 22px;
       display: grid;
       place-items: center;
       color: var(--gold);
       font-size: 30px;
     }
 
-    .empty-state h3 {
-      color: white;
+    .empty h3 {
+      font-size: 20px;
       margin-bottom: 10px;
-      font-family: Georgia, serif;
-      font-size: 22px;
     }
 
-    .empty-state p {
+    .empty p {
+      color: #777;
       line-height: 1.6;
       font-size: 13px;
     }
 
+    #resultImage {
+      width: 100%;
+      height: 100%;
+      max-height: 650px;
+      object-fit: contain;
+      display: none;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(216,179,106,.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: auto auto 18px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .result-actions {
+      display: none;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .action {
+      flex: 1;
+      padding: 13px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: var(--card2);
+      color: white;
+      font-weight: 700;
+    }
+
+    .action.primary {
+      background: var(--gold);
+      color: #080808;
+      border-color: var(--gold);
+    }
+
+    /* FEATURES */
+
     .features {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3,1fr);
       gap: 15px;
-      margin-top: 25px;
+      margin-top: 22px;
     }
 
     .feature {
-      padding: 22px;
       border: 1px solid var(--border);
-      border-radius: 18px;
       background: rgba(255,255,255,.025);
+      border-radius: 16px;
+      padding: 20px;
     }
 
     .feature-icon {
-      font-size: 23px;
+      color: var(--gold);
+      font-size: 22px;
       margin-bottom: 12px;
     }
 
     .feature h3 {
+      font-size: 14px;
       margin-bottom: 7px;
-      font-size: 15px;
     }
 
     .feature p {
-      color: var(--muted);
-      line-height: 1.5;
+      color: #777;
       font-size: 12px;
+      line-height: 1.5;
     }
+
+    /* FOOTER */
 
     footer {
       text-align: center;
-      padding: 30px;
-      color: #777;
-      font-size: 12px;
       border-top: 1px solid var(--border);
+      padding: 30px 20px;
+      color: #666;
+      font-size: 11px;
     }
 
     footer strong {
       color: var(--gold);
+      letter-spacing: 2px;
     }
 
+    /* MOBILE */
+
     @media (max-width: 850px) {
-      header {
-        padding: 14px 4%;
-      }
-
-      main {
-        width: 94%;
-        padding-top: 30px;
-      }
-
-      .layout {
+      .studio {
         grid-template-columns: 1fr;
       }
 
-      .result {
+      .result-panel {
         min-height: 500px;
       }
 
       .canvas {
-        min-height: 430px;
+        min-height: 450px;
+      }
+    }
+
+    @media (max-width: 550px) {
+      header {
+        padding: 0 18px;
+      }
+
+      .status {
+        display: none;
+      }
+
+      .hero {
+        padding: 50px 10px 35px;
+      }
+
+      .hero h1 {
+        letter-spacing: -2px;
+      }
+
+      main {
+        width: 94%;
+      }
+
+      .panel {
+        padding: 18px;
+        border-radius: 17px;
       }
 
       .features {
         grid-template-columns: 1fr;
       }
-    }
 
-    @media (max-width: 480px) {
-      .brand {
-        font-size: 17px;
-      }
-
-      .brand-mark {
-        width: 36px;
-        height: 36px;
-      }
-
-      #status {
-        font-size: 10px;
-      }
-
-      .panel {
-        padding: 18px;
-        border-radius: 18px;
-      }
-
-      .hero h1 {
-        font-size: 44px;
-      }
-
-      .hero span {
-        font-size: 14px;
+      .canvas {
+        min-height: 400px;
       }
     }
   </style>
@@ -478,264 +553,513 @@
 
 <body>
 
-  <header>
-    <div class="brand">
-      <div class="brand-mark">O</div>
-      <div>
-        OBITREND
-        <small>AI FASHION CREATOR</small>
-      </div>
+<header>
+  <div class="logo">
+    <div class="logo-mark">O</div>
+
+    <div>
+      <div class="logo-name">OBITREND</div>
+      <span class="logo-sub">AI FASHION STUDIO</span>
     </div>
+  </div>
 
-    <span id="status">● Ready</span>
-  </header>
+  <div class="status">
+    <span class="status-dot"></span>
+    AI STUDIO READY
+  </div>
+</header>
 
-  <main>
 
-    <section class="hero">
-      <div class="eyebrow">OBITREND AI STUDIO</div>
+<section class="hero">
+  <div class="eyebrow">✦ NEXT-GENERATION FASHION CREATOR</div>
 
-      <h1>Create your next fashion campaign.</h1>
+  <h1>
+    Turn clothing into
+    <span>fashion.</span>
+  </h1>
 
-      <span>
-        Upload any clothing piece and transform it into a
-        photorealistic fashion campaign with your preferred
-        model, location, pose and style.
-      </span>
+  <p>
+    Upload a garment, choose your model, location, pose and creative direction.
+    OBITREND transforms your clothing reference into a premium fashion campaign.
+  </p>
+</section>
 
-      <div class="badge-row">
-        <div class="badge">✦ AI POWERED</div>
-        <div class="badge">✦ PHOTO REALISTIC</div>
-        <div class="badge">✦ FASHION READY</div>
+
+<main>
+
+  <div class="studio">
+
+    <!-- LEFT PANEL -->
+
+    <section class="panel">
+
+      <div class="panel-title">
+        <h2>Fashion Setup</h2>
+        <span class="step">01 / 02</span>
       </div>
+
+
+      <!-- UPLOAD -->
+
+      <div class="upload">
+
+        <div class="upload-icon">＋</div>
+
+        <strong id="fileLabel">
+          Upload your clothing
+        </strong>
+
+        <small>
+          PNG, JPG or WEBP<br>
+          Maximum 12 MB
+        </small>
+
+        <label class="upload-btn" for="garment">
+          Choose Photo
+        </label>
+
+        <input
+          id="garment"
+          type="file"
+          accept="image/png,image/jpeg,image/webp"
+        >
+
+        <img
+          id="preview"
+          alt="Clothing preview"
+        >
+
+      </div>
+
+
+      <!-- MODEL -->
+
+      <div class="field">
+        <label for="model">MODEL</label>
+
+        <select id="model">
+          <option value="Elegant adult woman">
+            Elegant adult woman
+          </option>
+
+          <option value="Curvy adult woman">
+            Curvy adult woman
+          </option>
+
+          <option value="Petite adult woman">
+            Petite adult woman
+          </option>
+
+          <option value="Adult man">
+            Adult man
+          </option>
+
+          <option value="Professional fashion model">
+            Professional fashion model
+          </option>
+
+          <option value="Studio mannequin">
+            Studio mannequin
+          </option>
+        </select>
+      </div>
+
+
+      <!-- BACKGROUND -->
+
+      <div class="field">
+        <label for="background">LOCATION / BACKGROUND</label>
+
+        <select id="background">
+          <option value="Luxury fashion studio">
+            Luxury fashion studio
+          </option>
+
+          <option value="Dubai luxury setting">
+            Dubai luxury setting
+          </option>
+
+          <option value="Luxury hotel">
+            Luxury hotel
+          </option>
+
+          <option value="Modern restaurant">
+            Modern restaurant
+          </option>
+
+          <option value="Premium shopping mall">
+            Premium shopping mall
+          </option>
+
+          <option value="City street">
+            City street
+          </option>
+
+          <option value="Beach luxury resort">
+            Beach luxury resort
+          </option>
+
+          <option value="Clean e-commerce backdrop">
+            Clean e-commerce backdrop
+          </option>
+        </select>
+      </div>
+
+
+      <!-- POSE -->
+
+      <div class="field">
+        <label for="pose">POSE</label>
+
+        <select id="pose">
+          <option value="Standing editorial pose">
+            Standing editorial pose
+          </option>
+
+          <option value="Walking fashion pose">
+            Walking fashion pose
+          </option>
+
+          <option value="Seated lifestyle pose">
+            Seated lifestyle pose
+          </option>
+
+          <option value="Confident model pose">
+            Confident model pose
+          </option>
+
+          <option value="Two-pose campaign">
+            Two-pose campaign
+          </option>
+        </select>
+      </div>
+
+
+      <!-- STYLE -->
+
+      <div class="field">
+        <label for="style">CREATIVE STYLE</label>
+
+        <select id="style">
+          <option value="Luxury">
+            Luxury
+          </option>
+
+          <option value="Editorial">
+            Editorial
+          </option>
+
+          <option value="Streetwear">
+            Streetwear
+          </option>
+
+          <option value="Minimal">
+            Minimal
+          </option>
+
+          <option value="Commercial e-commerce">
+            Commercial e-commerce
+          </option>
+
+          <option value="High-end campaign">
+            High-end campaign
+          </option>
+        </select>
+      </div>
+
+
+      <!-- EXTRA -->
+
+      <div class="field">
+        <label for="extra">
+          EXTRA INSTRUCTIONS
+        </label>
+
+        <textarea
+          id="extra"
+          placeholder="Example: Keep the clothing exactly the same. Use premium lighting, realistic fabric texture and a sophisticated fashion campaign look."
+        ></textarea>
+      </div>
+
+
+      <button
+        id="generate"
+        class="generate"
+        type="button"
+      >
+        ✦ GENERATE FASHION CAMPAIGN
+      </button>
+
+      <div class="security">
+        🔒 Your API key stays on the server.
+      </div>
+
     </section>
 
 
-    <div class="layout">
+    <!-- RIGHT RESULT -->
 
-      <!-- LEFT CONTROL PANEL -->
-      <aside class="panel">
+    <section class="panel result-panel">
 
-        <div class="panel-title">
-          <h2>Create your look</h2>
-          <span class="number">01 / 05</span>
+      <div class="result-head">
+
+        <h2>Your Fashion Campaign</h2>
+
+        <span class="badge">
+          OBITREND AI
+        </span>
+
+      </div>
+
+
+      <div class="canvas">
+
+        <!-- EMPTY -->
+
+        <div id="empty" class="empty">
+
+          <div class="empty-icon">
+            ◇
+          </div>
+
+          <h3>
+            Your creation appears here
+          </h3>
+
+          <p>
+            Upload a clothing photo and choose your creative
+            direction. Your generated fashion campaign will
+            appear in this space.
+          </p>
+
         </div>
 
 
-        <!-- UPLOAD -->
-        <label class="upload">
+        <!-- LOADING -->
 
-          <div class="upload-icon">📸</div>
+        <div id="loading" class="loading">
 
-          <strong id="fileLabel">
-            Upload clothing photo
-          </strong>
+          <div class="spinner"></div>
 
-          <small>
-            PNG, JPG or WEBP · Maximum 12 MB
-          </small>
+          <p>
+            Creating your fashion campaign...
+          </p>
 
-          <input
-            id="garment"
-            type="file"
-            accept="image/png,image/jpeg,image/webp"
-          >
-
-        </label>
-
-
-        <div class="preview-wrap">
-          <img
-            id="preview"
-            class="preview-hidden"
-            alt="Garment preview"
-          >
         </div>
 
 
-        <!-- MODEL -->
-        <label>
-          <span>01 — Choose your model</span>
+        <!-- RESULT -->
 
-          <select id="model">
-            <option>Elegant adult woman</option>
-            <option>Curvy adult woman</option>
-            <option>Adult man</option>
-            <option>Studio mannequin</option>
-          </select>
-        </label>
+        <img
+          id="resultImage"
+          alt="Generated fashion campaign"
+        >
+
+      </div>
 
 
-        <!-- BACKGROUND -->
-        <label>
-          <span>02 — Choose location</span>
+      <div id="resultActions" class="result-actions">
 
-          <select id="background">
-            <option>Luxury fashion studio</option>
-            <option>Dubai luxury setting</option>
-            <option>Modern restaurant</option>
-            <option>Luxury hotel</option>
-            <option>City street</option>
-            <option>Clean e-commerce backdrop</option>
-          </select>
-        </label>
-
-
-        <!-- POSE -->
-        <label>
-          <span>03 — Choose pose</span>
-
-          <select id="pose">
-            <option>Standing editorial pose</option>
-            <option>Walking pose</option>
-            <option>Seated lifestyle pose</option>
-            <option>Two-pose campaign</option>
-          </select>
-        </label>
-
-
-        <!-- STYLE -->
-        <label>
-          <span>04 — Choose style</span>
-
-          <select id="style">
-            <option>Luxury</option>
-            <option>Streetwear</option>
-            <option>Minimal</option>
-            <option>Editorial</option>
-            <option>Commercial e-commerce</option>
-          </select>
-        </label>
-
-
-        <!-- EXTRA -->
-        <label>
-          <span>05 — Extra instructions</span>
-
-          <textarea
-            id="extra"
-            placeholder="Example: Keep the garment exactly the same. Use an elegant model, full-body shot, premium lighting and a luxury background."
-          ></textarea>
-        </label>
-
-
-        <!-- GENERATE -->
         <button
-          id="generate"
-          class="generate-btn"
+          id="download"
+          class="action primary"
           type="button"
         >
-          ✨ GENERATE FASHION LOOK
+          ↓ Download Image
         </button>
 
-        <p style="
-          color:#777;
-          font-size:11px;
-          text-align:center;
-          margin-top:12px;
-          line-height:1.5;
-        ">
-          Your API key stays safely on the server.
-        </p>
+        <button
+          id="newCampaign"
+          class="action"
+          type="button"
+        >
+          + New Campaign
+        </button>
 
-      </aside>
-
-
-      <!-- RESULT PANEL -->
-      <section class="panel result">
-
-        <div class="result-head">
-
-          <div>
-            <div style="
-              color:var(--gold);
-              font-size:10px;
-              letter-spacing:3px;
-              margin-bottom:6px;
-            ">
-              AI CANVAS
-            </div>
-
-            <h2>Your fashion campaign</h2>
-          </div>
-
-          <button
-            id="download"
-            disabled
-            type="button"
-          >
-            ↓ Download
-          </button>
-
-        </div>
-
-
-        <div id="canvas" class="canvas">
-
-          <div class="empty-state">
-
-            <div class="empty-icon">✦</div>
-
-            <h3>Your masterpiece starts here</h3>
-
-            <p>
-              Upload a clothing photo, choose your creative
-              direction and tap <strong>Generate Fashion Look</strong>.
-            </p>
-
-          </div>
-
-        </div>
-
-      </section>
-
-    </div>
-
-
-    <!-- FEATURES -->
-    <section class="features">
-
-      <div class="feature">
-        <div class="feature-icon">👗</div>
-        <h3>Preserve the garment</h3>
-        <p>
-          Keep the clothing design, silhouette, colors,
-          seams and important details as faithful as possible.
-        </p>
-      </div>
-
-      <div class="feature">
-        <div class="feature-icon">✨</div>
-        <h3>Premium campaigns</h3>
-        <p>
-          Create polished fashion imagery suitable for
-          online stores, social media and advertising.
-        </p>
-      </div>
-
-      <div class="feature">
-        <div class="feature-icon">🚀</div>
-        <h3>CREATE • STYLE • SELL</h3>
-        <p>
-          Turn simple clothing photographs into compelling
-          visual content for your fashion business.
-        </p>
       </div>
 
     </section>
 
-  </main>
+  </div>
 
 
-  <footer>
-    <strong>OBITREND</strong> · AI Fashion Creator
-    <br>
-    Create your look. Build your brand.
-  </footer>
+  <!-- FEATURES -->
+
+  <div class="features">
+
+    <div class="feature">
+      <div class="feature-icon">◇</div>
+
+      <h3>Preserve the garment</h3>
+
+      <p>
+        The AI is instructed to keep the garment's
+        silhouette, neckline, sleeves, seams and details.
+      </p>
+    </div>
 
 
-  <!-- Your existing application JavaScript -->
-  <script src="app.js"></script>
+    <div class="feature">
+      <div class="feature-icon">✦</div>
 
-</body>
-</html>
+      <h3>Premium campaigns</h3>
+
+      <p>
+        Create polished fashion imagery for your
+        store, social media and marketing campaigns.
+      </p>
+    </div>
+
+
+    <div class="feature">
+      <div class="feature-icon">∞</div>
+
+      <h3>Creative control</h3>
+
+      <p>
+        Choose models, locations, poses and visual
+        directions before generating your campaign.
+      </p>
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer>
+  <strong>OBITREND</strong>
+  <br><br>
+  AI FASHION STUDIO · CREATE · STYLE · SELL
+</footer>
+
+
+<script>
+
+  const garmentInput = document.getElementById("garment");
+  const preview = document.getElementById("preview");
+  const fileLabel = document.getElementById("fileLabel");
+
+  const generateButton = document.getElementById("generate");
+
+  const empty = document.getElementById("empty");
+  const loading = document.getElementById("loading");
+  const resultImage = document.getElementById("resultImage");
+
+  const resultActions = document.getElementById("resultActions");
+  const downloadButton = document.getElementById("download");
+  const newCampaignButton = document.getElementById("newCampaign");
+
+
+  /* IMAGE PREVIEW */
+
+  garmentInput.addEventListener("change", function () {
+
+    const file = this.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    fileLabel.textContent = file.name;
+
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      preview.src = event.target.result;
+      preview.style.display = "block";
+    };
+
+    reader.readAsDataURL(file);
+  });
+
+
+  /* GENERATE */
+
+  generateButton.addEventListener("click", async function () {
+
+    const file = garmentInput.files[0];
+
+    if (!file) {
+      alert("Please upload a clothing photo first.");
+      return;
+    }
+
+
+    const model =
+      document.getElementById("model").value;
+
+    const background =
+      document.getElementById("background").value;
+
+    const pose =
+      document.getElementById("pose").value;
+
+    const style =
+      document.getElementById("style").value;
+
+    const extra =
+      document.getElementById("extra").value;
+
+
+    /* UI */
+
+    generateButton.disabled = true;
+
+    generateButton.textContent =
+      "CREATING YOUR CAMPAIGN...";
+
+    empty.style.display = "none";
+
+    resultImage.style.display = "none";
+
+    resultActions.style.display = "none";
+
+    loading.style.display = "block";
+
+
+    /* FORM DATA */
+
+    const formData = new FormData();
+
+    formData.append("garment", file);
+
+    formData.append("model", model);
+
+    formData.append("background", background);
+
+    formData.append("pose", pose);
+
+    formData.append("style", style);
+
+    formData.append("extra", extra);
+
+
+    try {
+
+      const response = await fetch(
+        "/api/generate",
+        {
+          method: "POST",
+          body: formData
+        }
+      );
+
+
+      const data = await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          "Generation failed."
+        );
+
+      }
+
+
+      if (!data.image) {
+
+        throw new Error(
+          "No image was returned by the ser
