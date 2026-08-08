@@ -952,26 +952,36 @@
 
 
   /* IMAGE PREVIEW */
-
-  garmentInput.addEventListener("change", function () {
-
-    const file = this.files[0];
+garmentInput.addEventListener("change", function () {
+    const file = garmentInput.files[0];
 
     if (!file) {
-      return;
+        preview.style.display = "none";
+        preview.removeAttribute("src");
+        return;
     }
 
     fileLabel.textContent = file.name;
 
+    if (!file.type.startsWith("image/")) {
+        alert("Please select a PNG, JPG or WEBP image.");
+        garmentInput.value = "";
+        return;
+    }
+
     const reader = new FileReader();
 
     reader.onload = function (event) {
-      preview.src = event.target.result;
-      preview.style.display = "block";
+        preview.src = event.target.result;
+        preview.style.display = "block";
+    };
+
+    reader.onerror = function () {
+        alert("Could not read this image.");
     };
 
     reader.readAsDataURL(file);
-  });
+});
 
 
   /* GENERATE */
