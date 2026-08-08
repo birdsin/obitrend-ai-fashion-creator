@@ -3,7 +3,7 @@ import express from "express";
 import multer from "multer";
 import OpenAI from "openai";
 import fs from "node:fs";
-
+import { toFile } from "openai";
 const app = express();
 const port = process.env.PORT || 3000;
 const upload = multer({
@@ -47,12 +47,18 @@ app.post("/api/generate", upload.single("garment"), async (req, res) => {
 
   try {
     const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    const result = await client.images.edit({
-      model: "gpt-image-2",
-      image: fs.createReadStream(req.file.path),
-      prompt,
-      size: "1024x1024"
-    });
+    const imageFile = await toFile(
+  fs.readFileSync(req.file.path),
+  "garment.jpg",
+  { type: "image/jpeg" }
+);
+
+const result = await client.images.edit({
+  model: "gpt-image-1",
+  image: imageFile,
+  prompt,
+  size: "1024x1024"
+});
 
     const b64 = result.data?.[0]?.b64_json;
     if (!b64) throw new Error("No image was returned by the image service.");
