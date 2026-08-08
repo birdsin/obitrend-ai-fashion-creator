@@ -1069,26 +1069,28 @@ garmentInput.addEventListener("change", function () {
 
 
       if (!response.ok) {
-
-        const data = await response.json();
-
-if (!response.ok) {
-    throw new Error(
-        data.error || `Server error (${response.status})`
-    );
+  throw new Error(
+    data.error || `Server error (${response.status})`
+  );
 }
 
 if (!data.image) {
-    throw new Error("No image was returned by the server.");
+  throw new Error("No image was returned by the server.");
 }
-        
-          
-        );
+        resultImage.src = data.image;
+        resultImage.style.display = "block";
+        resultActions.style.display = "flex";
 
-      }
+    } catch (error) {
+        alert(error.message || "Something went wrong.");
+    } finally {
+        generateButton.disabled = false;
+        generateButton.textContent = "GENERATE CAMPAIGN";
+        loading.style.display = "none";
+    }
+});
+</script>
 
+</body>
+</html>
 
-      if (!data.image) {
-
-        throw new Error(
-          "No image was returned by the ser
