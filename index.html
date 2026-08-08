@@ -1051,9 +1051,19 @@
 
       if (!response.ok) {
 
-        throw new Error(
-          data.error ||
-          "Generation failed."
+        const data = await response.json();
+
+if (!response.ok) {
+    throw new Error(
+        data.error || `Server error (${response.status})`
+    );
+}
+
+if (!data.image) {
+    throw new Error("No image was returned by the server.");
+}
+        
+          
         );
 
       }
