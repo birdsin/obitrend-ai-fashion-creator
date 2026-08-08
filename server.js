@@ -48,7 +48,7 @@ app.post("/api/generate", upload.single("garment"), async (req, res) => {
   try {
     const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const result = await client.images.edit({
-      model: "gpt-image-1",
+      model: "gpt-image-2",
       image: fs.createReadStream(req.file.path),
       prompt,
       size: "1024x1024"
