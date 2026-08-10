@@ -1,166 +1,148 @@
-const $ = (id) => document.getElementById(id);
-let resultUrl = null;
-
 document.addEventListener("DOMContentLoaded", () => {
-  const garment = $("garment");
-  const generate = $("generate");
-  const preview = $("preview");
-  const fileLabel = $("fileLabel");
-  const canvas = $("canvas");
-  const download = $("download");
-  const status = $("status");
+      const garment = document.getElementById("garment");
+        const preview = document.getElementById("preview");
 
-  if (!garment) {
-    console.error("OBITREND: garment input not found");
-    return;
-  }
+          if (!garment) {
+              console.error("OBITREND: garment input not found");
+                  return;
+                    }
 
-  if (!generate) {
-    console.error("OBITREND: generate button not found");
-    return;
-  }
+                      garment.addEventListener("change", (event) => {
+                          const file = event.target.files[0];
 
-  garment.addEventListener("change", () => {
-    const file = garment.files && garment.files[0];
+                              if (!file) {
+                                    return;
+                                        }
 
-    if (!file) return;
+                                            console.log("OBITREND: Photo selected:", file.name);
 
-    if (fileLabel) {
-      fileLabel.textContent = file.name;
-    }
+                                                if (!file.type.startsWith("image/")) {
+                                                      alert("Please select a JPG, PNG, or WEBP image.");
+                                                            return;
+                                                                }
 
-    if (preview) {
-      preview.src = URL.createObjectURL(file);
-      preview.classList.remove("preview-hidden");
-    }
+                                                                    if (file.size > 12 * 1024 * 1024) {
+                                                                          alert("Image must be smaller than 12 MB.");
+                                                                                return;
+                                                                                    }
 
-    if (status) {
-      status.textContent = "• Photo uploaded";
-    }
-  });
+                                                                                        const imageURL = URL.createObjectURL(file);
 
-  generate.addEventListener("click", async (event) => {
-    event.preventDefault();
+                                                                                            preview.src = imageURL;
+                                                                                                preview.style.display = "block";
+                                                                                                    preview.hidden = false;
 
-    console.log("OBITREND: Generate clicked");
+                                                                                                        preview.onload = () => {
+                                                                                                              URL.revokeObjectURL(imageURL);
+                                                                                                                  };
+                                                                                                                    });
+                                                                                                                    });
+const generateBtn = document.getElementById("generateBtn");
 
-    const file = garment.files && garment.files[0];
+generateBtn.addEventListener("click", async () => {
+  const garment = document.getElementById("garment");
 
-    if (!file) {
-      alert("Upload a clothing photo first.");
-      return;
-    }
+    if (!garment || !garment.files || !garment.files[0]) {
+        alert("Please upload a clothing image first.");
+            return;
+              }
 
-    const form = new FormData();
+                const file = garment.files[0];
 
-    form.append("garment", file);
+                const formData = new FormData();
+                formData.append("garment", file);
+                formData.append("model", "realistic fashion model");
+                        formData.append("background", "luxury fashion studio");
+                          formData.append("pose", "standing naturally");
+                            formData.append("style", "professional fashion campaign");
+                              formData.append("extra", "Preserve the exact garment design, color, shape, stitching and details.");
 
-    ["model", "background", "pose", "style", "extra"].forEach((id) => {
-      const element = $(id);
+                                generateBtn.disabled = true;
+                                  generateBtn.textContent = "Generating...";
 
-      if (element) {
-        form.append(id, element.value || "");
-      }
-    });
+                                    try {
+                                        const response = await fetch("/api/generate", {
+                                              method: "POST",
+                                                    body: formData
+                                                        });
 
-    generate.disabled = true;
+                                                            const data = await response.json();
 
-    if (download) {
-      download.disabled = true;
-    }
+                                                                if (!response.ok) {
+                                                                      throw new Error(data.error || "Image generation failed.");
+                                                                          }
 
-    if (status) {
-      status.textContent = "• Generating...";
-    }
+const preview = document.getElementById("preview");
 
-    if (canvas) {
-      canvas.innerHTML = `
-        <div class="spinner"></div>
-        <p>Creating your fashion campaign...</p>
-      `;
-    }
+if (data.image) {
+  preview.src = data.image;
+    preview.style.display = "block";
 
-    try {
-      console.log("OBITREND: Sending request to /api/generate");
+      // Create download button
+        let downloadBtn = document.getElementById("downloadBtn");
 
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        body: form
-      });
+          if (!downloadBtn) {
+              downloadBtn = document.createElement("a");
+                  downloadBtn.id = "downloadBtn";
+                  downloadBtn.textContent = "Download Image";
+                  downloadBtn.download = "OBITREND-fashion-creator.png";
 
-      console.log("OBITREND: Server response", response.status);
+downloadBtn.style.display = "block";
+downloadBtn.style.marginTop = "18px";
+downloadBtn.style.textAlign = "center";
+downloadBtn.style.padding = "14px 24px";
+downloadBtn.style.borderRadius = "12px";
+downloadBtn.style.textDecoration = "none";
+downloadBtn.style.fontSize = "16px";
+downloadBtn.style.fontWeight = "600";
+downloadBtn.style.background = "#111111";
+downloadBtn.style.color = "#ffffff";
+downloadBtn.style.boxShadow = "0 4px 12px rgba(0,0,0,0.18)";
+downloadBtn.style.cursor = "pointer";
+downloadBtn.style.transition = "0.2s";
 
-      const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || "Generation failed.");
-      }
+                                                          preview.parentElement.appendChild(downloadBtn);
+                                                            }
 
-      if (!data.image) {
-        throw new Error("Server returned no image.");
-      }
+                                                              downloadBtn.href = data.image;
 
-      resultUrl = data.image;
+                                                              } else if (data.b64_json) {
 
-      if (canvas) {
-        canvas.innerHTML = `
-          <img
-            src="${resultUrl}"
-            alt="Generated OBITREND fashion campaign"
-            style="width:100%;height:auto;display:block;border-radius:16px;"
-          >
-        `;
-      }
+                                                                const imageData = "data:image/png;base64," + data.b64_json;
 
-      if (download) {
-        download.disabled = false;
-      }
+                                                                  preview.src = imageData;
+                                                                    preview.style.display = "block";
 
-      if (status) {
-        status.textContent = "• Image ready";
-      }
+                                                                      let downloadBtn = document.getElementById("downloadBtn");
 
-    } catch (error) {
-      console.error("OBITREND generation error:", error);
+                                                                        if (!downloadBtn) {
+                                                                            downloadBtn = document.createElement("a");
+                                                                                downloadBtn.id = "downloadBtn";
+                                                                                    downloadBtn.textContent = "Download Image";
+                                                                                        downloadBtn.download = "obitrend-fashion-image.png";
 
-      if (canvas) {
-        canvas.innerHTML = `
-          <div>
-            <h3>Generation failed</h3>
-            <p>${escapeHtml(error.message)}</p>
-          </div>
-        `;
-      }
+                                                                                            downloadBtn.style.display = "block";
+                                                                                                downloadBtn.style.marginTop = "15px";
+                                                                                                    downloadBtn.style.textAlign = "center";
+                                                                                                        downloadBtn.style.padding = "12px";
+                                                                                                            downloadBtn.style.borderRadius = "10px";
+                                                                                                                downloadBtn.style.textDecoration = "none";
+                                                                                                                    downloadBtn.style.cursor = "pointer";
 
-      if (status) {
-        status.textContent = "• Error";
-      }
+                                                                                                                        preview.parentElement.appendChild(downloadBtn);
+                                                                                                                          }
 
-    } finally {
-      generate.disabled = false;
-    }
-  });
+                                                                                                                            downloadBtn.href = imageData;
 
-  if (download) {
-    download.addEventListener("click", () => {
-      if (!resultUrl) return;
-
-      const a = document.createElement("a");
-      a.href = resultUrl;
-      a.download = "obitrend-fashion-campaign.png";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    });
-  }
-});
-
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, (char) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  }[char]));
-}
+                                                                                                                            } else {
+                                                                                                                              throw new Error("No generated image was returned.");
+                                                                                                                              }
+                                                                                                                              } catch (error) {
+                                                                                                                                  console.error(error);
+                                                                                                                                      alert("Generation failed: " + error.message);
+                                                                                                                                        } finally {
+                                                                                                                                            generateBtn.disabled = false;
+                                                                                                                                                generateBtn.textContent = "Generate Fashion";
+                                                                                                                                                  }
+                                                                                                                                                  });

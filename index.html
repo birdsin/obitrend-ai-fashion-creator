@@ -2,1126 +2,132 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>OBITREND — AI Fashion Studio</title>
-
-  <style>
-     #preview {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  max-height: 400px;
-  object-fit: contain;
-  margin-top: 20px;
-  border-radius: 16px;
-}
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --gold: #d8b36a;
-      --gold2: #f3d48b;
-      --black: #070707;
-      --dark: #101010;
-      --card: #151515;
-      --card2: #1c1c1c;
-      --white: #ffffff;
-      --muted: #a8a8a8;
-      --border: rgba(255,255,255,.10);
-      --success: #67e8a5;
-    }
-
-    body {
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at 80% 0%, rgba(216,179,106,.15), transparent 30%),
-        radial-gradient(circle at 0% 70%, rgba(255,255,255,.04), transparent 30%),
-        var(--black);
-      color: var(--white);
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    /* HEADER */
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 5%;
-      background: rgba(7,7,7,.88);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-mark {
-      width: 42px;
-      height: 42px;
-      border: 1px solid var(--gold);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      color: var(--gold);
-      font-size: 19px;
-      font-weight: 900;
-    }
-
-    .logo-name {
-      font-size: 20px;
-      font-weight: 900;
-      letter-spacing: 2px;
-    }
-
-    .logo-sub {
-      display: block;
-      color: var(--gold);
-      font-size: 8px;
-      letter-spacing: 3px;
-      margin-top: 2px;
-    }
-
-    .status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--success);
-      box-shadow: 0 0 12px var(--success);
-    }
-
-    /* HERO */
-
-    .hero {
-      text-align: center;
-      padding: 70px 20px 45px;
-      max-width: 950px;
-      margin: auto;
-    }
-
-    .eyebrow {
-      display: inline-block;
-      color: var(--gold2);
-      border: 1px solid rgba(216,179,106,.35);
-      background: rgba(216,179,106,.07);
-      padding: 8px 15px;
-      border-radius: 30px;
-      font-size: 11px;
-      letter-spacing: 2px;
-      margin-bottom: 22px;
-    }
-
-    .hero h1 {
-      font-size: clamp(38px, 7vw, 76px);
-      line-height: .98;
-      letter-spacing: -3px;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 span {
-      color: var(--gold);
-    }
-
-    .hero p {
-      color: var(--muted);
-      max-width: 650px;
-      margin: auto;
-      font-size: 16px;
-      line-height: 1.7;
-    }
-
-    /* MAIN */
-
-    main {
-      width: 90%;
-      max-width: 1250px;
-      margin: auto;
-      padding-bottom: 80px;
-    }
-
-    .studio {
-      display: grid;
-      grid-template-columns: 390px 1fr;
-      gap: 22px;
-      align-items: start;
-    }
-
-    .panel {
-      background:
-        linear-gradient(145deg, rgba(255,255,255,.05), rgba(255,255,255,.015)),
-        var(--card);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 25px;
-      box-shadow: 0 25px 70px rgba(0,0,0,.25);
-    }
-
-    .panel-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 22px;
-    }
-
-    .panel-title h2 {
-      font-size: 20px;
-    }
-
-    .step {
-      color: var(--gold);
-      font-size: 11px;
-      letter-spacing: 2px;
-    }
-
-    /* UPLOAD */
-
-    .upload {
-      border: 1px dashed rgba(216,179,106,.55);
-      border-radius: 18px;
-      padding: 30px 18px;
-      text-align: center;
-      background: rgba(216,179,106,.035);
-      transition: .25s;
-    }
-
-    .upload:hover {
-      background: rgba(216,179,106,.08);
-      border-color: var(--gold);
-    }
-
-    .upload-icon {
-      width: 58px;
-      height: 58px;
-      border-radius: 18px;
-      margin: auto auto 15px;
-      display: grid;
-      place-items: center;
-      background: rgba(216,179,106,.12);
-      color: var(--gold);
-      font-size: 27px;
-    }
-
-    .upload strong {
-      display: block;
-      margin-bottom: 7px;
-    }
-
-    .upload small {
-      color: var(--muted);
-      display: block;
-      line-height: 1.5;
-    }
-
-    #garment {
-      display: none;
-    }
-
-    .upload-btn {
-      display: inline-block;
-      margin-top: 17px;
-      padding: 11px 18px;
-      border-radius: 10px;
-      background: var(--gold);
-      color: #080808;
-      font-weight: 800;
-      font-size: 13px;
-    }
-
-    #preview {
-      width: 100%;
-      max-height: 250px;
-      object-fit: contain;
-      margin-top: 18px;
-      border-radius: 14px;
-      display: none;
-    }
-
-    /* FORM */
-
-    .field {
-      margin-top: 19px;
-    }
-
-    .field label {
-      display: block;
-      color: #ddd;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      letter-spacing: .3px;
-    }
-
-    select,
-    textarea {
-      width: 100%;
-      color: white;
-      background: #0d0d0d;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 13px;
-      outline: none;
-    }
-
-    select:focus,
-    textarea:focus {
-      border-color: var(--gold);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 90px;
-      line-height: 1.5;
-    }
-
-    /* GENERATE */
-
-    .generate {
-      width: 100%;
-      margin-top: 23px;
-      border: 0;
-      border-radius: 13px;
-      padding: 16px;
-      background: linear-gradient(135deg, var(--gold2), var(--gold));
-      color: #090909;
-      font-weight: 900;
-      letter-spacing: .5px;
-      transition: .25s;
-    }
-
-    .generate:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(216,179,106,.20);
-    }
-
-    .generate:disabled {
-      opacity: .55;
-      cursor: wait;
-      transform: none;
-    }
-
-    .security {
-      text-align: center;
-      color: #777;
-      font-size: 10px;
-      margin-top: 12px;
-    }
-
-    /* RESULT */
-
-    .result-panel {
-      min-height: 680px;
-    }
-
-    .result-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .result-head h2 {
-      font-size: 20px;
-    }
-
-    .badge {
-      border: 1px solid var(--border);
-      color: var(--gold);
-      padding: 7px 10px;
-      border-radius: 20px;
-      font-size: 10px;
-      letter-spacing: 1px;
-    }
-
-    .canvas {
-      min-height: 570px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background:
-        radial-gradient(circle at 50% 20%, rgba(216,179,106,.08), transparent 30%),
-        #0b0b0b;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 35px;
-      max-width: 450px;
-    }
-
-    .empty-icon {
-      width: 75px;
-      height: 75px;
-      margin: auto auto 20px;
-      border: 1px solid rgba(216,179,106,.35);
-      border-radius: 22px;
-      display: grid;
-      place-items: center;
-      color: var(--gold);
-      font-size: 30px;
-    }
-
-    .empty h3 {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-
-    .empty p {
-      color: #777;
-      line-height: 1.6;
-      font-size: 13px;
-    }
-
-    #resultImage {
-      width: 100%;
-      height: 100%;
-      max-height: 650px;
-      object-fit: contain;
-      display: none;
-    }
-
-    .loading {
-      display: none;
-      text-align: center;
-    }
-
-    .spinner {
-      width: 48px;
-      height: 48px;
-      border: 3px solid rgba(216,179,106,.2);
-      border-top-color: var(--gold);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: auto auto 18px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .loading p {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .result-actions {
-      display: none;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .action {
-      flex: 1;
-      padding: 13px;
-      border-radius: 11px;
-      border: 1px solid var(--border);
-      background: var(--card2);
-      color: white;
-      font-weight: 700;
-    }
-
-    .action.primary {
-      background: var(--gold);
-      color: #080808;
-      border-color: var(--gold);
-    }
-
-    /* FEATURES */
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 15px;
-      margin-top: 22px;
-    }
-
-    .feature {
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.025);
-      border-radius: 16px;
-      padding: 20px;
-    }
-
-    .feature-icon {
-      color: var(--gold);
-      font-size: 22px;
-      margin-bottom: 12px;
-    }
-
-    .feature h3 {
-      font-size: 14px;
-      margin-bottom: 7px;
-    }
-
-    .feature p {
-      color: #777;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    /* FOOTER */
-
-    footer {
-      text-align: center;
-      border-top: 1px solid var(--border);
-      padding: 30px 20px;
-      color: #666;
-      font-size: 11px;
-    }
-
-    footer strong {
-      color: var(--gold);
-      letter-spacing: 2px;
-    }
-
-    /* MOBILE */
-
-    @media (max-width: 850px) {
-      .studio {
-        grid-template-columns: 1fr;
-      }
-
-      .result-panel {
-        min-height: 500px;
-      }
-
-      .canvas {
-        min-height: 450px;
-      }
-    }
-
-    @media (max-width: 550px) {
-      header {
-        padding: 0 18px;
-      }
-
-      .status {
-        display: none;
-      }
-
-      .hero {
-        padding: 50px 10px 35px;
-      }
-
-      .hero h1 {
-        letter-spacing: -2px;
-      }
-
-      main {
-        width: 94%;
-      }
-
-      .panel {
-        padding: 18px;
-        border-radius: 17px;
-      }
-
-      .features {
-        grid-template-columns: 1fr;
-      }
-
-      .canvas {
-        min-height: 400px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-<header>
-  <div class="logo">
-    <div class="logo-mark">O</div>
-
-    <div>
-      <div class="logo-name">OBITREND</div>
-      <span class="logo-sub">AI FASHION STUDIO</span>
-    </div>
-  </div>
-
-  <div class="status">
-    <span class="status-dot"></span>
-    AI STUDIO READY
-  </div>
-</header>
-
-
-<section class="hero">
-  <div class="eyebrow">✦ NEXT-GENERATION FASHION CREATOR</div>
-
-  <h1>
-    Turn clothing into
-    <span>fashion.</span>
-  </h1>
-
-  <p>
-    Upload a garment, choose your model, location, pose and creative direction.
-    OBITREND transforms your clothing reference into a premium fashion campaign.
-  </p>
-</section>
-
-
-<main>
-
-  <div class="studio">
-
-    <!-- LEFT PANEL -->
-
-    <section class="panel">
-
-      <div class="panel-title">
-        <h2>Fashion Setup</h2>
-        <span class="step">01 / 02</span>
-      </div>
-
-
-      <!-- UPLOAD -->
-
-      <div class="upload">
-
-        <div class="upload-icon">＋</div>
-
-        <strong id="fileLabel">
-          Upload your clothing
-        </strong>
-
-        <small>
-          PNG, JPG or WEBP<br>
-          Maximum 12 MB
-        </small>
-
-        <label class="upload-btn" for="garment">
-          Choose Photo
-        </label>
-
-        <input
-          id="garment"
-          type="file"
-          accept="image/png,image/jpeg,image/webp"
-        >
-
-        <img
-          id="preview"
-          alt="Clothing preview"
-        >
-
-      </div>
-
-
-      <!-- MODEL -->
-
-      <div class="field">
-        <label for="model">MODEL</label>
-
-        <select id="model">
-          <option value="Elegant adult woman">
-            Elegant adult woman
-          </option>
-
-          <option value="Curvy adult woman">
-            Curvy adult woman
-          </option>
-
-          <option value="Petite adult woman">
-            Petite adult woman
-          </option>
-
-          <option value="Adult man">
-            Adult man
-          </option>
-
-          <option value="Professional fashion model">
-            Professional fashion model
-          </option>
-
-          <option value="Studio mannequin">
-            Studio mannequin
-          </option>
-        </select>
-      </div>
-
-
-      <!-- BACKGROUND -->
-
-      <div class="field">
-        <label for="background">LOCATION / BACKGROUND</label>
-
-        <select id="background">
-          <option value="Luxury fashion studio">
-            Luxury fashion studio
-          </option>
-
-          <option value="Dubai luxury setting">
-            Dubai luxury setting
-          </option>
-
-          <option value="Luxury hotel">
-            Luxury hotel
-          </option>
-
-          <option value="Modern restaurant">
-            Modern restaurant
-          </option>
-
-          <option value="Premium shopping mall">
-            Premium shopping mall
-          </option>
-
-          <option value="City street">
-            City street
-          </option>
-
-          <option value="Beach luxury resort">
-            Beach luxury resort
-          </option>
-
-          <option value="Clean e-commerce backdrop">
-            Clean e-commerce backdrop
-          </option>
-        </select>
-      </div>
-
-
-      <!-- POSE -->
-
-      <div class="field">
-        <label for="pose">POSE</label>
-
-        <select id="pose">
-          <option value="Standing editorial pose">
-            Standing editorial pose
-          </option>
-
-          <option value="Walking fashion pose">
-            Walking fashion pose
-          </option>
-
-          <option value="Seated lifestyle pose">
-            Seated lifestyle pose
-          </option>
-
-          <option value="Confident model pose">
-            Confident model pose
-          </option>
-
-          <option value="Two-pose campaign">
-            Two-pose campaign
-          </option>
-        </select>
-      </div>
-
-
-      <!-- STYLE -->
-
-      <div class="field">
-        <label for="style">CREATIVE STYLE</label>
-
-        <select id="style">
-          <option value="Luxury">
-            Luxury
-          </option>
-
-          <option value="Editorial">
-            Editorial
-          </option>
-
-          <option value="Streetwear">
-            Streetwear
-          </option>
-
-          <option value="Minimal">
-            Minimal
-          </option>
-
-          <option value="Commercial e-commerce">
-            Commercial e-commerce
-          </option>
-
-          <option value="High-end campaign">
-            High-end campaign
-          </option>
-        </select>
-      </div>
-
-
-      <!-- EXTRA -->
-
-      <div class="field">
-        <label for="extra">
-          EXTRA INSTRUCTIONS
-        </label>
-
-        <textarea
-          id="extra"
-          placeholder="Example: Keep the clothing exactly the same. Use premium lighting, realistic fabric texture and a sophisticated fashion campaign look."
-        ></textarea>
-      </div>
-
-
-      <button
-        id="generate"
-        class="generate"
-        type="button"
-      >
-        ✦ GENERATE FASHION CAMPAIGN
-      </button>
-
-      <div class="security">
-        🔒 Your API key stays on the server.
-      </div>
-
-    </section>
-
-
-    <!-- RIGHT RESULT -->
-
-    <section class="panel result-panel">
-
-      <div class="result-head">
-
-        <h2>Your Fashion Campaign</h2>
-
-        <span class="badge">
-          OBITREND AI
-        </span>
-
-      </div>
-
-
-      <div class="canvas">
-
-        <!-- EMPTY -->
-
-        <div id="empty" class="empty">
-
-          <div class="empty-icon">
-            ◇
-          </div>
-
-          <h3>
-            Your creation appears here
-          </h3>
-
-          <p>
-            Upload a clothing photo and choose your creative
-            direction. Your generated fashion campaign will
-            appear in this space.
-          </p>
-
-        </div>
-
-
-        <!-- LOADING -->
-
-        <div id="loading" class="loading">
-
-          <div class="spinner"></div>
-
-          <p>
-            Creating your fashion campaign...
-          </p>
-
-        </div>
-
-
-        <!-- RESULT -->
-
-        <img
-          id="resultImage"
-          alt="Generated fashion campaign"
-        >
-
-      </div>
-
-
-      <div id="resultActions" class="result-actions">
-
-        <button
-          id="download"
-          class="action primary"
-          type="button"
-        >
-          ↓ Download Image
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+      <title>OBITREND – AI Fashion Studio</title>
+
+        <style>
+            * {
+                  box-sizing: border-box;
+                      }
+
+                          body {
+                                margin: 0;
+                                      padding: 20px;
+                                            font-family: Arial, Helvetica, sans-serif;
+                                                  background: #f7f5f0;
+                                                        color: #111;
+                                                            }
+
+                                                                .upload-box {
+                                                                      max-width: 600px;
+                                                                            margin: 40px auto;
+                                                                                  padding: 30px;
+                                                                                        background: white;
+                                                                                              border: 2px dashed #d8c9a8;
+                                                                                                    border-radius: 20px;
+                                                                                                          text-align: center;
+                                                                                                              }
+
+                                                                                                                  .upload-box h2 {
+                                                                                                                        margin-top: 0;
+                                                                                                                            }
+
+                                                                                                                                #garment {
+                                                                                                                                      display: block;
+                                                                                                                                            width: 100%;
+                                                                                                                                                  margin: 20px 0;
+                                                                                                                                                        padding: 15px;
+                                                                                                                                                              border: 1px solid #ddd;
+                                                                                                                                                                    border-radius: 10px;
+                                                                                                                                                                        }
+
+                                                                                                                                                                            #preview {
+                                                                                                                                                                                  display: none;
+                                                                                                                                                                                        width: 100%;
+                                                                                                                                                                                              max-width: 100%;
+                                                                                                                                                                                                    height: auto;
+                                                                                                                                                                                                          max-height: 500px;
+                                                                                                                                                                                                                object-fit: contain;
+                                                                                                                                                                                                                      margin: 20px auto 0;
+                                                                                                                                                                                                                            border-radius: 16px;
+                                                                                                                                                                                                                                  background: #f1f1f1;
+                                                                                                                                                                                                                                      }
+
+                                                                                                                                                                                                                                          #preview.show {
+                                                                                                                                                                                                                                                display: block;
+                                                                                                                                                                                                                                                    }
+
+                                                                                                                                                                                                                                                        #fileName {
+                                                                                                                                                                                                                                                              margin-top: 10px;
+                                                                                                                                                                                                                                                                    font-size: 14px;
+                                                                                                                                                                                                                                                                          color: #666;
+                                                                                                                                                                                                                                                                              }
+                                                                                                                                                                                                                                                                                </style>
+                                                                                                                                                                                                                                                                                </head>
+
+                                                                                                                                                                                                                                                                                <body>
+
+                                                                                                                                                                                                                                                                                  <div class="upload-box">
+
+                                                                                                                                                                                                                                                                                      <h1>OBITREND</h1>
+                                                                                                                                                                                                                                                                                          <p>AI FASHION STUDIO</p>
+
+                                                                                                                                                                                                                                                                                              <h2>Upload your clothing</h2>
+
+                                                                                                                                                                                                                                                                                                  <p>PNG, JPG or WEBP</p>
+                                                                                                                                                                                                                                                                                                      <p>Maximum 12 MB</p>
+
+                                                                                                                                                                                                                                                                                                          <input
+                                                                                                                                                                                                                                                                                                                type="file"
+                                                                                                                                                                                                                                                                                                                      id="garment"
+                                                                                                                                                                                                                                                                                                                            accept="image/png,image/jpeg,image/webp"
+                                                                                                                                                                                                                                                                                                                                >
+
+                                                                                                                                                                                                                                                                                                                                    <div id="fileName"></div>
+
+                                                                                                                                                                                                                                                                                                                                        <img
+                                                                                                                                                                                                                                                                                                                                              id="preview"
+                                                                                                                                                                                                                                                                                                                                                    alt="Clothing preview"
+                                                                                                                                                                                                                                                                                                                                                        >
+<button id="generateBtn" type="button">
+        Generate Fashion
         </button>
+                                                                                                                                                                                                                                                                                                                                                          </div>
 
-        <button
-          id="newCampaign"
-          class="action"
-          type="button"
-        >
-          + New Campaign
-        </button>
+                                                                                                                                                                                                                                                                                                                                                            <script>
+                                                                                                                                                                                                                                                                                                                                                                document.addEventListener("DOMContentLoaded", function () {
 
-      </div>
+                                                                                                                                                                                                                                                                                                                                                                      const garment = document.getElementById("garment");
+                                                                                                                                                                                                                                                                                                                                                                            const preview = document.getElementById("preview");
+                                                                                                                                                                                                                                                                                                                                                                                  const fileName = document.getElementById("fileName");
 
-    </section>
+                                                                                                                                                                                                                                                                                                                                                                                        garment.addEventListener("change", function (event) {
 
-  </div>
+                                                                                                                                                                                                                                                                                                                                                                                                const file = event.target.files[0];
 
+                                                                                                                                                                                                                                                                                                                                                                                                        if (!file) {
+                                                                                                                                                                                                                                                                                                                                                                                                                  preview.src = "";
+                                                                                                                                                                                                                                                                                                                                                                                                                            preview.classList.remove("show");
+                                                                                                                                                                                                                                                                                                                                                                                                                                      fileName.textContent = "";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                return;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
 
-  <!-- FEATURES -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                fileName.textContent = "Selected: " + file.name;
 
-  <div class="features">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        const imageURL = URL.createObjectURL(file);
 
-    <div class="feature">
-      <div class="feature-icon">◇</div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                preview.src = imageURL;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        preview.classList.add("show");
 
-      <h3>Preserve the garment</h3>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                preview.onload = function () {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          URL.revokeObjectURL(imageURL);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  };
 
-      <p>
-        The AI is instructed to keep the garment's
-        silhouette, neckline, sleeves, seams and details.
-      </p>
-    </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        });
 
-
-    <div class="feature">
-      <div class="feature-icon">✦</div>
-
-      <h3>Premium campaigns</h3>
-
-      <p>
-        Create polished fashion imagery for your
-        store, social media and marketing campaigns.
-      </p>
-    </div>
-
-
-    <div class="feature">
-      <div class="feature-icon">∞</div>
-
-      <h3>Creative control</h3>
-
-      <p>
-        Choose models, locations, poses and visual
-        directions before generating your campaign.
-      </p>
-    </div>
-
-  </div>
-
-</main>
-
-
-<footer>
-  <strong>OBITREND</strong>
-  <br><br>
-  AI FASHION STUDIO · CREATE · STYLE · SELL
-</footer>
-
-
-<script>
-
-  const garmentInput = document.getElementById("garment");
-  const preview = document.getElementById("preview");
-  const fileLabel = document.getElementById("fileLabel");
-
-  const generateButton = document.getElementById("generate");
-
-  const empty = document.getElementById("empty");
-  const loading = document.getElementById("loading");
-  const resultImage = document.getElementById("resultImage");
-
-  const resultActions = document.getElementById("resultActions");
-  const downloadButton = document.getElementById("download");
-  const newCampaignButton = document.getElementById("newCampaign");
-
-
-  /* IMAGE PREVIEW */
-garmentInput.addEventListener("change", function () {
-    const file = garmentInput.files[0];
-
-    if (!file) {
-        preview.style.display = "none";
-        preview.removeAttribute("src");
-        return;
-    }
-
-    fileLabel.textContent = file.name;
-
-    if (!file.type.startsWith("image/")) {
-        alert("Please select a PNG, JPG or WEBP image.");
-        garmentInput.value = "";
-        return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = function (event) {
-        preview.src = event.target.result;
-        preview.style.display = "block";
-    };
-
-    reader.onerror = function () {
-        alert("Could not read this image.");
-    };
-
-    reader.readAsDataURL(file);
-});
-
-
-  /* GENERATE */
-
-  generateButton.addEventListener("click", async function () {
-
-    const file = garmentInput.files[0];
-
-    if (!file) {
-      alert("Please upload a clothing photo first.");
-      return;
-    }
-
-
-    const model =
-      document.getElementById("model").value;
-
-    const background =
-      document.getElementById("background").value;
-
-    const pose =
-      document.getElementById("pose").value;
-
-    const style =
-      document.getElementById("style").value;
-
-    const extra =
-      document.getElementById("extra").value;
-
-
-    /* UI */
-
-    generateButton.disabled = true;
-
-    generateButton.textContent =
-      "CREATING YOUR CAMPAIGN...";
-
-    empty.style.display = "none";
-
-    resultImage.style.display = "none";
-
-    resultActions.style.display = "none";
-
-    loading.style.display = "block";
-
-
-    /* FORM DATA */
-
-    const formData = new FormData();
-
-    formData.append("garment", file);
-
-    formData.append("model", model);
-
-    formData.append("background", background);
-
-    formData.append("pose", pose);
-
-    formData.append("style", style);
-
-    formData.append("extra", extra);
-
-
-    try {
-
-      const response = await fetch(
-        "/api/generate",
-        {
-          method: "POST",
-          body: formData
-        }
-      );
-
-
-      const data = await response.json();
-
-
-      if (!response.ok) {
-  throw new Error(
-    data.error || `Server error (${response.status})`
-  );
-}
-
-if (!data.image) {
-  throw new Error("No image was returned by the server.");
-}
-        resultImage.src = data.image;
-        resultImage.style.display = "block";
-        resultActions.style.display = "flex";
-
-    } catch (error) {
-        alert(error.message || "Something went wrong.");
-    } finally {
-        generateButton.disabled = false;
-        generateButton.textContent = "GENERATE CAMPAIGN";
-        loading.style.display = "none";
-    }
-});
-
-const downloadBtn = document.getElementById("download");
-const resultImage = document.getElementById("resultImage");
-
-downloadBtn.addEventListener("click", async () => {
-  if (!resultImage.src) {
-    alert("No generated image available.");
-    return;
-  }
-
-  try {
-    const response = await fetch(resultImage.src);
-    const blob = await response.blob();
-
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-
-    link.href = url;
-    link.download = "OBITREND-fashion-campaign.png";
-
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-
-    URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error("Download failed:", error);
-    alert("Unable to download the image.");
-  }
-});
-
-</script>
-
-</body>
-</html>
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </script>
+<script src="app.js"></script>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </body>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </html>
