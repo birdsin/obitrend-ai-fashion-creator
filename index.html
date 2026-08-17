@@ -1,133 +1,1772 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050505">
 
-      <title>OBITREND – AI Fashion Studio</title>
+<title>OBITREND AI Fashion Creator</title>
 
-        <style>
-            * {
-                  box-sizing: border-box;
-                      }
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-                          body {
-                                margin: 0;
-                                      padding: 20px;
-                                            font-family: Arial, Helvetica, sans-serif;
-                                                  background: #f7f5f0;
-                                                        color: #111;
-                                                            }
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:
+    radial-gradient(circle at top,#18233d 0%,#07090e 38%,#020304 100%);
+  color:#fff;
+  min-height:100vh;
+}
 
-                                                                .upload-box {
-                                                                      max-width: 600px;
-                                                                            margin: 40px auto;
-                                                                                  padding: 30px;
-                                                                                        background: white;
-                                                                                              border: 2px dashed #d8c9a8;
-                                                                                                    border-radius: 20px;
-                                                                                                          text-align: center;
-                                                                                                              }
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
 
-                                                                                                                  .upload-box h2 {
-                                                                                                                        margin-top: 0;
-                                                                                                                            }
+button{
+  cursor:pointer;
+}
 
-                                                                                                                                #garment {
-                                                                                                                                      display: block;
-                                                                                                                                            width: 100%;
-                                                                                                                                                  margin: 20px 0;
-                                                                                                                                                        padding: 15px;
-                                                                                                                                                              border: 1px solid #ddd;
-                                                                                                                                                                    border-radius: 10px;
-                                                                                                                                                                        }
+.app{
+  width:100%;
+  max-width:1250px;
+  margin:auto;
+  padding:18px;
+}
 
-                                                                                                                                                                            #preview {
-                                                                                                                                                                                  display: none;
-                                                                                                                                                                                        width: 100%;
-                                                                                                                                                                                              max-width: 100%;
-                                                                                                                                                                                                    height: auto;
-                                                                                                                                                                                                          max-height: 500px;
-                                                                                                                                                                                                                object-fit: contain;
-                                                                                                                                                                                                                      margin: 20px auto 0;
-                                                                                                                                                                                                                            border-radius: 16px;
-                                                                                                                                                                                                                                  background: #f1f1f1;
-                                                                                                                                                                                                                                      }
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:15px 5px 25px;
+}
 
-                                                                                                                                                                                                                                          #preview.show {
-                                                                                                                                                                                                                                                display: block;
-                                                                                                                                                                                                                                                    }
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
 
-                                                                                                                                                                                                                                                        #fileName {
-                                                                                                                                                                                                                                                              margin-top: 10px;
-                                                                                                                                                                                                                                                                    font-size: 14px;
-                                                                                                                                                                                                                                                                          color: #666;
-                                                                                                                                                                                                                                                                              }
-                                                                                                                                                                                                                                                                                </style>
-                                                                                                                                                                                                                                                                                </head>
+.logo{
+  width:58px;
+  height:58px;
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  font-size:30px;
+  background:linear-gradient(135deg,#1976ff,#9c27ff);
+  box-shadow:0 10px 35px rgba(50,100,255,.3);
+}
 
-                                                                                                                                                                                                                                                                                <body>
+.brand h1{
+  font-size:25px;
+  letter-spacing:3px;
+}
 
-                                                                                                                                                                                                                                                                                  <div class="upload-box">
+.brand p{
+  color:#9fa7b8;
+  margin-top:4px;
+}
 
-                                                                                                                                                                                                                                                                                      <h1>OBITREND</h1>
-                                                                                                                                                                                                                                                                                          <p>AI FASHION STUDIO</p>
+.pro-top{
+  border:1px solid #b99335;
+  background:linear-gradient(135deg,#e4bd57,#84651d);
+  color:#111;
+  border-radius:30px;
+  padding:12px 18px;
+  font-weight:800;
+}
 
-                                                                                                                                                                                                                                                                                              <h2>Upload your clothing</h2>
+.card{
+  background:rgba(14,17,25,.88);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:25px;
+  padding:22px;
+  margin-bottom:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
 
-                                                                                                                                                                                                                                                                                                  <p>PNG, JPG or WEBP</p>
-                                                                                                                                                                                                                                                                                                      <p>Maximum 12 MB</p>
+.hero{
+  text-align:center;
+  padding:35px 20px;
+}
 
-                                                                                                                                                                                                                                                                                                          <input
-                                                                                                                                                                                                                                                                                                                type="file"
-                                                                                                                                                                                                                                                                                                                      id="garment"
-                                                                                                                                                                                                                                                                                                                            accept="image/png,image/jpeg,image/webp"
-                                                                                                                                                                                                                                                                                                                                >
+.hero h2{
+  font-size:clamp(32px,6vw,65px);
+  margin-bottom:12px;
+}
 
-                                                                                                                                                                                                                                                                                                                                    <div id="fileName"></div>
+.hero p{
+  color:#aab2c1;
+  max-width:750px;
+  margin:auto;
+  line-height:1.6;
+}
 
-                                                                                                                                                                                                                                                                                                                                        <img
-                                                                                                                                                                                                                                                                                                                                              id="preview"
-                                                                                                                                                                                                                                                                                                                                                    alt="Clothing preview"
-                                                                                                                                                                                                                                                                                                                                                        >
-<button id="generateBtn" type="button">
-        Generate Fashion
-        </button>
-                                                                                                                                                                                                                                                                                                                                                          </div>
+.badge{
+  display:inline-block;
+  padding:8px 18px;
+  border-radius:25px;
+  background:#c69b32;
+  color:#111;
+  font-weight:bold;
+  letter-spacing:2px;
+  margin-bottom:18px;
+}
 
-                                                                                                                                                                                                                                                                                                                                                            <script>
-                                                                                                                                                                                                                                                                                                                                                                document.addEventListener("DOMContentLoaded", function () {
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                      const garment = document.getElementById("garment");
-                                                                                                                                                                                                                                                                                                                                                                            const preview = document.getElementById("preview");
-                                                                                                                                                                                                                                                                                                                                                                                  const fileName = document.getElementById("fileName");
+@media(max-width:700px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                        garment.addEventListener("change", function (event) {
+label{
+  display:block;
+  color:#dfe3eb;
+  font-weight:700;
+  margin-bottom:8px;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                const file = event.target.files[0];
+input,
+select,
+textarea{
+  width:100%;
+  background:#090c12;
+  border:1px solid #303744;
+  border-radius:13px;
+  color:#fff;
+  padding:14px;
+  outline:none;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                        if (!file) {
-                                                                                                                                                                                                                                                                                                                                                                                                                  preview.src = "";
-                                                                                                                                                                                                                                                                                                                                                                                                                            preview.classList.remove("show");
-                                                                                                                                                                                                                                                                                                                                                                                                                                      fileName.textContent = "";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                return;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                fileName.textContent = "Selected: " + file.name;
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:#7f8cff;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        const imageURL = URL.createObjectURL(file);
+.upload{
+  border:2px dashed #3e4655;
+  border-radius:20px;
+  padding:25px;
+  text-align:center;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                preview.src = imageURL;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        preview.classList.add("show");
+.upload input{
+  border:none;
+  padding:10px;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                preview.onload = function () {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          URL.revokeObjectURL(imageURL);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  };
+.preview-wrap{
+  margin-top:18px;
+  text-align:center;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        });
+#preview{
+  display:none;
+  width:100%;
+  max-height:430px;
+  object-fit:contain;
+  border-radius:18px;
+  background:#050505;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            });
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </script>
-<script src="app.js"></script>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </body>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </html>
+.primary{
+  width:100%;
+  border:none;
+  border-radius:16px;
+  padding:17px;
+  font-size:18px;
+  font-weight:800;
+  background:linear-gradient(135deg,#3976ff,#8d45ff);
+  color:white;
+  margin-top:18px;
+}
+
+.primary:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.pro-card{
+  border:1px solid #a98229;
+  background:
+    linear-gradient(135deg,rgba(193,151,48,.15),rgba(30,25,12,.8));
+}
+
+.price{
+  font-size:36px;
+  font-weight:900;
+  margin:12px 0;
+}
+
+.features{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin:18px 0;
+}
+
+@media(max-width:700px){
+  .features{
+    grid-template-columns:1fr;
+  }
+}
+
+.feature{
+  padding:13px;
+  border-radius:12px;
+  background:rgba(255,255,255,.05);
+  color:#d6dae2;
+}
+
+.generated{
+  text-align:center;
+}
+
+#generatedImage{
+  display:none;
+  width:100%;
+  max-height:800px;
+  object-fit:contain;
+  border-radius:20px;
+  background:#000;
+}
+
+.actions{
+  display:none;
+  gap:10px;
+  margin-top:15px;
+}
+
+.actions button{
+  flex:1;
+  border:none;
+  padding:14px;
+  border-radius:13px;
+  font-weight:800;
+}
+
+.download{
+  background:#fff;
+  color:#111;
+}
+
+.new{
+  background:#252b36;
+  color:#fff;
+}
+
+.spinner{
+  display:none;
+  text-align:center;
+  padding:20px;
+  color:#b8c1d2;
+}
+
+.history{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+
+@media(max-width:800px){
+  .history{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+.history img{
+  width:100%;
+  aspect-ratio:1;
+  object-fit:cover;
+  border-radius:13px;
+}
+
+.catalog-info{
+  color:#9da6b6;
+  line-height:1.6;
+  margin-top:10px;
+}
+
+.counter{
+  display:inline-block;
+  padding:7px 12px;
+  background:#111722;
+  border-radius:20px;
+  color:#b9c4ff;
+  margin:5px 4px 0 0;
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(0,0,0,.8);
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+.modal-box{
+  width:100%;
+  max-width:520px;
+  background:#11151d;
+  border:1px solid #303745;
+  border-radius:25px;
+  padding:25px;
+}
+
+.modal-box h2{
+  margin-bottom:10px;
+}
+
+.close{
+  float:right;
+  background:none;
+  border:none;
+  color:#fff;
+  font-size:25px;
+}
+
+.status{
+  margin-top:12px;
+  color:#aeb7c8;
+  min-height:22px;
+}
+
+footer{
+  text-align:center;
+  padding:35px 10px;
+  color:#70798a;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+  <div class="brand">
+    <div class="logo">🧠</div>
+    <div>
+      <h1>OBITREND</h1>
+      <p>AI Fashion Creator</p>
+    </div>
+  </div>
+
+  <button class="pro-top" id="topProBtn">
+    ✨ OBITREND PRO
+  </button>
+</header>
+
+<section class="card hero">
+  <span class="badge">OBITREND AI</span>
+
+  <h2>Create Your Fashion World</h2>
+
+  <p>
+    Upload clothing and create professional fashion campaigns
+    with different models, cities, luxury locations, hotels,
+    cars, beaches, pools, shops, airports and lifestyle scenes.
+  </p>
+
+  <div style="margin-top:20px">
+    <span class="counter">100,000+ Prompt Combinations</span>
+    <span class="counter">1,000,000+ Location Combinations</span>
+    <span class="counter">Luxury Fashion Scenes</span>
+  </div>
+</section>
+
+<section class="card">
+
+  <h2>👗 Upload Your Clothing</h2>
+
+  <div class="upload">
+    <p style="margin-bottom:12px">
+      Upload the clothing you want OBITREND to preserve.
+    </p>
+
+    <input
+      id="clothingInput"
+      type="file"
+      accept="image/*"
+    />
+
+    <div class="preview-wrap">
+      <img id="preview" alt="Clothing preview">
+    </div>
+  </div>
+
+</section>
+
+<section class="card">
+
+  <h2>✨ Fashion Creator</h2>
+
+  <br>
+
+  <div class="grid">
+
+    <div>
+      <label>Choose Lady</label>
+      <select id="lady"></select>
+    </div>
+
+    <div>
+      <label>Body Style</label>
+      <select id="body"></select>
+    </div>
+
+    <div>
+      <label>Fashion Style</label>
+      <select id="fashion"></select>
+    </div>
+
+    <div>
+      <label>Location / City</label>
+      <select id="location"></select>
+    </div>
+
+    <div>
+      <label>Environment</label>
+      <select id="environment"></select>
+    </div>
+
+    <div>
+      <label>Luxury Car</label>
+      <select id="car"></select>
+    </div>
+
+    <div>
+      <label>Aspect Ratio</label>
+      <select id="ratio">
+        <option value="5:4">5:4 Portrait</option>
+        <option value="9:16">9:16 Story</option>
+        <option value="1:1">1:1 Square</option>
+        <option value="16:9">16:9 Landscape</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Campaign Type</label>
+      <select id="campaign"></select>
+    </div>
+
+  </div>
+
+  <br>
+
+  <label>Custom Fashion Prompt</label>
+
+  <textarea
+    id="customPrompt"
+    placeholder="Example: Elegant luxury fashion campaign, professional photography, preserve the uploaded clothing exactly..."
+  ></textarea>
+
+  <button class="primary" id="generateBtn">
+    ✨ GENERATE FASHION IMAGE
+  </button>
+
+  <div class="spinner" id="spinner">
+    Creating your OBITREND fashion campaign...
+  </div>
+
+  <div class="status" id="generateStatus"></div>
+
+</section>
+
+<section class="card generated">
+
+  <h2>🖼️ Generated Fashion Image</h2>
+
+  <br>
+
+  <img id="generatedImage" alt="Generated OBITREND fashion image">
+
+  <div class="actions" id="actions">
+
+    <button class="download" id="downloadBtn">
+      ⬇️ Download
+    </button>
+
+    <button class="new" id="newBtn">
+      🔄 New Creation
+    </button>
+
+  </div>
+
+</section>
+
+<section class="card pro-card">
+
+  <span class="badge">OBITREND PRO</span>
+
+  <h2>Unlock Your Fashion Studio</h2>
+
+  <div class="price">
+    ₦15,000
+    <span style="font-size:16px;color:#9da6b6">
+      / week
+    </span>
+  </div>
+
+  <div class="features">
+
+    <div class="feature">
+      👩 Beautiful AI fashion models
+    </div>
+
+    <div class="feature">
+      🌍 Global city & location scenes
+    </div>
+
+    <div class="feature">
+      🏨 Luxury hotels & houses
+    </div>
+
+    <div class="feature">
+      🚘 Luxury lifestyle vehicles
+    </div>
+
+    <div class="feature">
+      🏖️ Beaches & swimming pools
+    </div>
+
+    <div class="feature">
+      🏟️ Stadium & event locations
+    </div>
+
+    <div class="feature">
+      ✈️ Airports around the world
+    </div>
+
+    <div class="feature">
+      📸 Advanced campaign creation
+    </div>
+
+    <div class="feature">
+      ⚡ Priority generation
+    </div>
+
+    <div class="feature">
+      🎨 Advanced fashion prompts
+    </div>
+
+  </div>
+
+  <button class="primary" id="upgradeBtn">
+    ✨ UPGRADE TO OBITREND PRO
+  </button>
+
+</section>
+
+<section class="card">
+
+  <h2>🌎 OBITREND World Catalog</h2>
+
+  <p class="catalog-info">
+    OBITREND combines fashion prompts, model descriptions,
+    locations, environments, vehicles and campaign styles
+    algorithmically to create a huge number of possible
+    fashion scenes.
+  </p>
+
+  <div style="margin-top:15px">
+    <span class="counter">100,000+ Prompt combinations</span>
+    <span class="counter">1,000,000+ Scene combinations</span>
+    <span class="counter">Global cities</span>
+    <span class="counter">Luxury hotels</span>
+    <span class="counter">Luxury homes</span>
+    <span class="counter">Shops</span>
+    <span class="counter">Stadiums</span>
+    <span class="counter">Airports</span>
+    <span class="counter">Beaches</span>
+    <span class="counter">Pools</span>
+    <span class="counter">Markets</span>
+    <span class="counter">Luxury cars</span>
+  </div>
+
+</section>
+
+<section class="card">
+
+  <h2>🕘 Generation History</h2>
+
+  <br>
+
+  <div class="history" id="history"></div>
+
+  <p id="emptyHistory" style="color:#788192">
+    Your generated images will appear here.
+  </p>
+
+</section>
+
+<footer>
+  © 2026 OBITREND AI Fashion Creator
+</footer>
+
+</div>
+
+
+<!-- PRO PAYMENT MODAL -->
+
+<div class="modal" id="proModal">
+
+  <div class="modal-box">
+
+    <button class="close" id="closeModal">×</button>
+
+    <h2>✨ OBITREND PRO</h2>
+
+    <p style="color:#aab2c0;margin:12px 0 20px">
+      Upgrade to the OBITREND Pro weekly plan.
+    </p>
+
+    <label>Email address</label>
+
+    <input
+      id="paymentEmail"
+      type="email"
+      placeholder="you@example.com"
+      autocomplete="email"
+    >
+
+    <button class="primary" id="continueBtn">
+      Continue to Paystack
+    </button>
+
+    <div class="status" id="paymentStatus"></div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   OBITREND CONFIGURATION
+   ========================================================= */
+
+const OBITREND = {
+
+  /* Public Paystack plan code.
+     SECRET KEY MUST NEVER be placed here. */
+
+  planCode: "PLN_sd2ggtyt2egdre",
+
+  paymentPlan: "PRO_WEEKLY",
+
+  currency: "NGN",
+
+  price: 15000
+
+};
+
+
+/* =========================================================
+   LARGE VIRTUAL FASHION CATALOG
+   ========================================================= */
+
+/*
+  We intentionally generate combinations instead of putting
+  millions of duplicate records into HTML.
+
+  Example:
+  100 models × 100 styles × 100 locations × 100 environments
+  already creates 100,000,000 possible combinations.
+*/
+
+
+const ladies = [
+
+  "Elegant African fashion model",
+  "Beautiful Nigerian fashion model",
+  "Beautiful Ghanaian fashion model",
+  "Beautiful Kenyan fashion model",
+  "Beautiful South African fashion model",
+  "Beautiful Ethiopian fashion model",
+  "Beautiful Moroccan fashion model",
+  "Beautiful Egyptian fashion model",
+  "Beautiful French fashion model",
+  "Beautiful Italian fashion model",
+  "Beautiful Spanish fashion model",
+  "Beautiful Brazilian fashion model",
+  "Beautiful Colombian fashion model",
+  "Beautiful American fashion model",
+  "Beautiful British fashion model",
+  "Beautiful Canadian fashion model",
+  "Beautiful Japanese fashion model",
+  "Beautiful Korean fashion model",
+  "Beautiful Indian fashion model",
+  "Beautiful Caribbean fashion model",
+
+  "Elegant dark-skinned fashion model",
+  "Elegant brown-skinned fashion model",
+  "Elegant light-skinned fashion model",
+  "Elegant caramel-skinned fashion model",
+  "Elegant chocolate-skinned fashion model",
+  "Elegant ebony-skinned fashion model",
+
+  "Pretty curvy fashion model",
+  "Tall elegant fashion model",
+  "Petite elegant fashion model",
+  "Athletic fashion model",
+  "Plus-size fashion model",
+  "Slim fashion model",
+  "Hourglass fashion model",
+
+  "High-fashion editorial model",
+  "Luxury campaign model",
+  "Runway fashion model",
+  "Streetwear fashion model",
+  "Luxury lifestyle model"
+];
+
+
+const bodies = [
+
+  "Natural elegant body",
+  "Curvy body",
+  "Hourglass body",
+  "Tall model body",
+  "Petite body",
+  "Athletic body",
+  "Slim body",
+  "Plus-size body",
+  "Elegant feminine body",
+  "Fashion runway proportions"
+
+];
+
+
+const fashions = [
+
+  "Luxury haute couture",
+  "African luxury fashion",
+  "Modern streetwear",
+  "Elegant evening fashion",
+  "Luxury casual fashion",
+  "Premium designer fashion",
+  "Minimalist fashion",
+  "Editorial fashion",
+  "High-end boutique fashion",
+  "Resort fashion",
+  "Summer fashion",
+  "Winter fashion",
+  "Business fashion",
+  "Party fashion",
+  "Wedding fashion",
+  "Red carpet fashion",
+  "Airport fashion",
+  "Beach fashion",
+  "Sport luxury fashion",
+  "Urban fashion",
+  "Denim fashion",
+  "Baggy fashion",
+  "Elegant skirt outfit",
+  "Luxury trousers outfit",
+  "Crop-top fashion",
+  "Tank-top fashion",
+  "Sleeveless fashion",
+  "Square-neck fashion",
+  "Premium casual outfit",
+  "Designer campaign fashion"
+];
+
+
+const cities = [
+
+  "Lagos, Nigeria",
+  "Abuja, Nigeria",
+  "Port Harcourt, Nigeria",
+  "Accra, Ghana",
+  "Kumasi, Ghana",
+  "Nairobi, Kenya",
+  "Cape Town, South Africa",
+  "Johannesburg, South Africa",
+  "Addis Ababa, Ethiopia",
+  "Cairo, Egypt",
+  "Casablanca, Morocco",
+  "Dubai, United Arab Emirates",
+  "Abu Dhabi, United Arab Emirates",
+  "Doha, Qatar",
+  "London, United Kingdom",
+  "Paris, France",
+  "Milan, Italy",
+  "Rome, Italy",
+  "Madrid, Spain",
+  "Barcelona, Spain",
+  "New York, USA",
+  "Los Angeles, USA",
+  "Miami, USA",
+  "Atlanta, USA",
+  "Las Vegas, USA",
+  "Chicago, USA",
+  "Toronto, Canada",
+  "Vancouver, Canada",
+  "São Paulo, Brazil",
+  "Rio de Janeiro, Brazil",
+  "Bogotá, Colombia",
+  "Mexico City, Mexico",
+  "Tokyo, Japan",
+  "Osaka, Japan",
+  "Seoul, South Korea",
+  "Singapore",
+  "Bangkok, Thailand",
+  "Mumbai, India",
+  "Delhi, India",
+  "Sydney, Australia",
+  "Melbourne, Australia"
+];
+
+
+const environments = [
+
+  "Luxury five-star hotel lobby",
+  "Luxury hotel rooftop",
+  "Luxury hotel bedroom",
+  "Luxury hotel pool",
+  "Luxury apartment",
+  "Luxury mansion",
+  "Modern luxury house",
+  "Classic luxury house",
+  "Luxury penthouse",
+  "Designer boutique",
+  "Luxury fashion store",
+  "Shopping mall",
+  "Premium supermarket",
+  "Elegant restaurant",
+  "Luxury coffee shop",
+  "Airport terminal",
+  "Private airport lounge",
+  "International airport",
+  "Football stadium",
+  "Luxury stadium box",
+  "Beach resort",
+  "Private beach",
+  "Tropical beach",
+  "Luxury swimming pool",
+  "Infinity pool",
+  "Resort pool",
+  "Outdoor market",
+  "Luxury market",
+  "Modern city street",
+  "Downtown skyline",
+  "Luxury car showroom",
+  "Yacht marina",
+  "Private yacht",
+  "Garden",
+  "Luxury rooftop",
+  "Fashion runway",
+  "Concert venue",
+  "Luxury event hall"
+];
+
+
+const cars = [
+
+  "Black luxury SUV",
+  "White luxury SUV",
+  "Luxury G-Wagon",
+  "Black G-Wagon",
+  "White G-Wagon",
+  "Luxury Lamborghini",
+  "Luxury Ferrari",
+  "Luxury Bentley",
+  "Luxury Rolls-Royce",
+  "Luxury Mercedes-Benz",
+  "Luxury Range Rover",
+  "Luxury Porsche",
+  "Luxury BMW",
+  "Luxury Audi",
+  "Luxury Maybach",
+  "Luxury sports car",
+  "Luxury convertible",
+  "Premium electric car",
+  "Luxury limousine",
+  "Luxury supercar"
+];
+
+
+const campaigns = [
+
+  "Luxury fashion campaign",
+  "Instagram fashion campaign",
+  "TikTok fashion campaign",
+  "Billboard fashion campaign",
+  "Magazine editorial",
+  "Luxury brand campaign",
+  "African fashion campaign",
+  "International fashion campaign",
+  "Resort campaign",
+  "Street fashion campaign",
+  "Designer campaign",
+  "Beauty editorial",
+  "Premium lifestyle campaign",
+  "Fashion week campaign",
+  "Red carpet campaign",
+  "Travel fashion campaign"
+];
+
+
+/* =========================================================
+   DOM HELPERS
+   ========================================================= */
+
+function fillSelect(id, values){
+
+  const select = document.getElementById(id);
+
+  select.innerHTML = "";
+
+  values.forEach(value => {
+
+    const option = document.createElement("option");
+
+    option.value = value;
+    option.textContent = value;
+
+    select.appendChild(option);
+
+  });
+
+}
+
+
+fillSelect("lady", ladies);
+fillSelect("body", bodies);
+fillSelect("fashion", fashions);
+fillSelect("location", cities);
+fillSelect("environment", environments);
+fillSelect("car", cars);
+fillSelect("campaign", campaigns);
+
+
+/* =========================================================
+   IMAGE UPLOAD
+   ========================================================= */
+
+let clothingData = "";
+
+const clothingInput =
+  document.getElementById("clothingInput");
+
+const preview =
+  document.getElementById("preview");
+
+
+clothingInput.addEventListener("change", function(){
+
+  const file = this.files && this.files[0];
+
+  if(!file){
+
+    clothingData = "";
+
+    preview.src = "";
+
+    preview.style.display = "none";
+
+    return;
+
+  }
+
+  if(!file.type.startsWith("image/")){
+
+    alert("Please choose an image file.");
+
+    this.value = "";
+
+    return;
+
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function(event){
+
+    clothingData = event.target.result;
+
+    preview.src = clothingData;
+
+    preview.style.display = "block";
+
+  };
+
+  reader.readAsDataURL(file);
+
+});
+
+
+/* =========================================================
+   PROMPT ENGINE
+   ========================================================= */
+
+function buildPrompt(){
+
+  const lady =
+    document.getElementById("lady").value;
+
+  const body =
+    document.getElementById("body").value;
+
+  const fashion =
+    document.getElementById("fashion").value;
+
+  const location =
+    document.getElementById("location").value;
+
+  const environment =
+    document.getElementById("environment").value;
+
+  const car =
+    document.getElementById("car").value;
+
+  const campaign =
+    document.getElementById("campaign").value;
+
+  const custom =
+    document.getElementById("customPrompt").value.trim();
+
+  return `
+Create a professional photorealistic fashion campaign.
+
+MODEL:
+${lady}
+
+BODY:
+${body}
+
+FASHION STYLE:
+${fashion}
+
+LOCATION:
+${location}
+
+ENVIRONMENT:
+${environment}
+
+LUXURY VEHICLE:
+${car}
+
+CAMPAIGN:
+${campaign}
+
+IMPORTANT CLOTHING PRESERVATION RULES:
+
+Preserve the uploaded clothing design as accurately as possible.
+Preserve its original color.
+Preserve its fabric appearance.
+Preserve its patterns.
+Preserve logos and graphics where possible.
+Preserve stitching and garment structure.
+Preserve sleeves.
+Preserve neckline.
+Preserve pockets.
+Preserve buttons.
+Preserve belt details.
+Do not redesign the clothing.
+Do not replace the clothing.
+Do not invent a different garment.
+
+Create a beautiful professional fashion photograph.
+Natural realistic face.
+Natural realistic hands.
+Professional fashion posing.
+Professional studio-quality lighting.
+High-end photography.
+Realistic skin texture.
+Realistic fabric texture.
+Premium commercial fashion photography.
+
+${custom}
+
+OUTPUT:
+High quality.
+Professional composition.
+Photorealistic.
+Suitable for a luxury fashion campaign.
+`;
+
+}
+
+
+/* =========================================================
+   GENERATION
+   ========================================================= */
+
+const generateBtn =
+  document.getElementById("generateBtn");
+
+const spinner =
+  document.getElementById("spinner");
+
+const generateStatus =
+  document.getElementById("generateStatus");
+
+const generatedImage =
+  document.getElementById("generatedImage");
+
+const actions =
+  document.getElementById("actions");
+
+
+generateBtn.addEventListener("click", async function(){
+
+  if(!clothingData){
+
+    alert("Please upload a clothing image first.");
+
+    return;
+
+  }
+
+  generateBtn.disabled = true;
+
+  spinner.style.display = "block";
+
+  generateStatus.textContent =
+    "Preparing your fashion campaign...";
+
+  generatedImage.style.display = "none";
+
+  actions.style.display = "none";
+
+
+  try{
+
+    const payload = {
+
+      image: clothingData,
+
+      imageData: clothingData,
+
+      clothingImage: clothingData,
+
+      prompt: buildPrompt(),
+
+      aspectRatio:
+        document.getElementById("ratio").value,
+
+      ratio:
+        document.getElementById("ratio").value,
+
+      lady:
+        document.getElementById("lady").value,
+
+      body:
+        document.getElementById("body").value,
+
+      fashion:
+        document.getElementById("fashion").value,
+
+      location:
+        document.getElementById("location").value,
+
+      environment:
+        document.getElementById("environment").value,
+
+      car:
+        document.getElementById("car").value,
+
+      campaign:
+        document.getElementById("campaign").value
+
+    };
+
+
+    const response = await fetch("/api/generate",{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify(payload)
+
+    });
+
+
+    let data;
+
+    try{
+
+      data = await response.json();
+
+    }catch(e){
+
+      throw new Error(
+        "The image server returned an invalid response."
+      );
+
+    }
+
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error ||
+        data.message ||
+        "Image generation failed."
+      );
+
+    }
+
+
+    const imageUrl =
+      data.imageUrl ||
+      data.image ||
+      data.url ||
+      data.data?.imageUrl ||
+      data.data?.url;
+
+
+    if(!imageUrl){
+
+      throw new Error(
+        "The server did not return an image."
+      );
+
+    }
+
+
+    generatedImage.src = imageUrl;
+
+    generatedImage.style.display = "block";
+
+    actions.style.display = "flex";
+
+    generateStatus.textContent =
+      "Fashion image created successfully.";
+
+    saveHistory(imageUrl);
+
+
+    document
+      .querySelector(".generated")
+      .scrollIntoView({
+        behavior:"smooth"
+      });
+
+
+  }catch(error){
+
+    console.error("OBITREND generation error:",error);
+
+    generateStatus.textContent =
+      error.message ||
+      "Unable to generate image.";
+
+    alert(
+      "Generation Error:\n\n" +
+      (error.message || "Unable to generate image.")
+    );
+
+  }finally{
+
+    generateBtn.disabled = false;
+
+    spinner.style.display = "none";
+
+  }
+
+});
+
+
+/* =========================================================
+   DOWNLOAD
+   ========================================================= */
+
+document
+  .getElementById("downloadBtn")
+  .addEventListener("click",function(){
+
+    const url = generatedImage.src;
+
+    if(!url){
+
+      return;
+
+    }
+
+    const a =
+      document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+      "obitrend-fashion-image.png";
+
+    a.target = "_blank";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+  });
+
+
+/* =========================================================
+   NEW CREATION
+   ========================================================= */
+
+document
+  .getElementById("newBtn")
+  .addEventListener("click",function(){
+
+    generatedImage.src = "";
+
+    generatedImage.style.display = "none";
+
+    actions.style.display = "none";
+
+    generateStatus.textContent = "";
+
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+
+  });
+
+
+/* =========================================================
+   HISTORY
+   ========================================================= */
+
+function saveHistory(url){
+
+  let history = [];
+
+  try{
+
+    history =
+      JSON.parse(
+        localStorage.getItem("obitrend_history") || "[]"
+      );
+
+  }catch(e){
+
+    history = [];
+
+  }
+
+
+  history.unshift(url);
+
+  history =
+    history.slice(0,12);
+
+  localStorage.setItem(
+    "obitrend_history",
+    JSON.stringify(history)
+  );
+
+  renderHistory();
+
+}
+
+
+function renderHistory(){
+
+  const box =
+    document.getElementById("history");
+
+  const empty =
+    document.getElementById("emptyHistory");
+
+  let history = [];
+
+  try{
+
+    history =
+      JSON.parse(
+        localStorage.getItem("obitrend_history") || "[]"
+      );
+
+  }catch(e){
+
+    history = [];
+
+  }
+
+
+  box.innerHTML = "";
+
+
+  if(!history.length){
+
+    empty.style.display = "block";
+
+    return;
+
+  }
+
+
+  empty.style.display = "none";
+
+
+  history.forEach(url => {
+
+    const img =
+      document.createElement("img");
+
+    img.src = url;
+
+    img.loading = "lazy";
+
+    img.addEventListener("click",function(){
+
+      generatedImage.src = url;
+
+      generatedImage.style.display = "block";
+
+      actions.style.display = "flex";
+
+      document
+        .querySelector(".generated")
+        .scrollIntoView({
+          behavior:"smooth"
+        });
+
+    });
+
+    box.appendChild(img);
+
+  });
+
+}
+
+
+renderHistory();
+
+
+/* =========================================================
+   PRO MODAL
+   ========================================================= */
+
+const proModal =
+  document.getElementById("proModal");
+
+const upgradeBtn =
+  document.getElementById("upgradeBtn");
+
+const topProBtn =
+  document.getElementById("topProBtn");
+
+const closeModal =
+  document.getElementById("closeModal");
+
+const continueBtn =
+  document.getElementById("continueBtn");
+
+const paymentEmail =
+  document.getElementById("paymentEmail");
+
+const paymentStatus =
+  document.getElementById("paymentStatus");
+
+
+function openPro(){
+
+  proModal.style.display = "flex";
+
+}
+
+
+upgradeBtn.addEventListener(
+  "click",
+  openPro
+);
+
+topProBtn.addEventListener(
+  "click",
+  openPro
+);
+
+
+closeModal.addEventListener(
+  "click",
+  function(){
+
+    proModal.style.display = "none";
+
+  }
+);
+
+
+proModal.addEventListener(
+  "click",
+  function(event){
+
+    if(event.target === proModal){
+
+      proModal.style.display = "none";
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   PAYSTACK
+   ========================================================= */
+
+continueBtn.addEventListener(
+  "click",
+  async function(){
+
+    const email =
+      paymentEmail.value.trim();
+
+
+    if(!email){
+
+      alert("Please enter your email address.");
+
+      return;
+
+    }
+
+
+    if(!email.includes("@")){
+
+      alert("Please enter a valid email address.");
+
+      return;
+
+    }
+
+
+    continueBtn.disabled = true;
+
+    continueBtn.textContent =
+      "Connecting to Paystack...";
+
+    paymentStatus.textContent =
+      "Starting secure payment...";
+
+
+    try{
+
+      /*
+        IMPORTANT:
+
+        The browser sends the plan identifier to your server.
+        The Paystack SECRET KEY remains on Vercel.
+      */
+
+      const response =
+        await fetch("/api/paystack",{
+
+          method:"POST",
+
+          headers:{
+            "Content-Type":"application/json"
+          },
+
+          body:JSON.stringify({
+
+            email:email,
+
+            plan:"PRO_WEEKLY",
+
+            planCode:
+              OBITREND.planCode,
+
+            amount:
+              OBITREND.price,
+
+            currency:
+              OBITREND.currency
+
+          })
+
+        });
+
+
+      let data;
+
+      try{
+
+        data = await response.json();
+
+      }catch(e){
+
+        throw new Error(
+          "Payment server returned an invalid response."
+        );
+
+      }
+
+
+      console.log(
+        "OBITREND Paystack response:",
+        data
+      );
+
+
+      if(!response.ok){
+
+        throw new Error(
+          data.error ||
+          data.message ||
+          "Failed to initialize payment."
+        );
+
+      }
+
+
+      const paymentUrl =
+        data.authorization_url ||
+        data.data?.authorization_url;
+
+
+      if(!paymentUrl){
+
+        throw new Error(
+          "Paystack did not return a payment URL."
+        );
+
+      }
+
+
+      localStorage.setItem(
+        "obitrend_payment_email",
+        email
+      );
+
+
+      window.location.href =
+        paymentUrl;
+
+
+    }catch(error){
+
+      console.error(
+        "OBITREND payment error:",
+        error
+      );
+
+
+      paymentStatus.textContent =
+        error.message ||
+        "Unable to start payment.";
+
+
+      alert(
+        "Payment Error:\n\n" +
+        (error.message ||
+        "Unable to start payment.")
+      );
+
+
+    }finally{
+
+      continueBtn.disabled = false;
+
+      continueBtn.textContent =
+        "Continue to Paystack";
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   RANDOMIZE CAMPAIGN
+   ========================================================= */
+
+function randomItem(array){
+
+  return array[
+    Math.floor(
+      Math.random() * array.length
+    )
+  ];
+
+}
+
+
+function randomizeFashion(){
+
+  document.getElementById("lady").value =
+    randomItem(ladies);
+
+  document.getElementById("body").value =
+    randomItem(bodies);
+
+  document.getElementById("fashion").value =
+    randomItem(fashions);
+
+  document.getElementById("location").value =
+    randomItem(cities);
+
+  document.getElementById("environment").value =
+    randomItem(environments);
+
+  document.getElementById("car").value =
+    randomItem(cars);
+
+  document.getElementById("campaign").value =
+    randomItem(campaigns);
+
+}
+
+
+document.addEventListener(
+  "keydown",
+  function(event){
+
+    /*
+      Ctrl + Shift + R creates a random
+      fashion campaign configuration.
+    */
+
+    if(
+      event.ctrlKey &&
+      event.shiftKey &&
+      event.key.toLowerCase() === "r"
+    ){
+
+      event.preventDefault();
+
+      randomizeFashion();
+
+    }
+
+  }
+);
+
+</script>
+
+</body>
+</html>
