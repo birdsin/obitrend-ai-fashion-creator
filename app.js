@@ -61,7 +61,7 @@ generateBtn.addEventListener("click", async () => {
                                   generateBtn.textContent = "Generating...";
 
                                     try {
-                                        const response = await fetch("/api/generate", {
+                                        const response = await fetch("/api/auto-generate", {
                                               method: "POST",
                                                     body: formData
                                                         });
