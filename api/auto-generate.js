@@ -1,113 +1,148 @@
-const fs = require("fs");
-const formidable = require("formidable");
+document.addEventListener("DOMContentLoaded", () => {
+      const garment = document.getElementById("garment");
+        const preview = document.getElementById("preview");
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const DETECTION_MODEL = process.env.OBITREND_DETECTION_MODEL || "gpt-5.6-luna";
-const IMAGE_MODEL = "gpt-image-2";
+          if (!garment) {
+              console.error("OBITREND: garment input not found");
+                  return;
+                    }
 
-function parseForm(req) {
-  return new Promise((resolve, reject) => {
-    const form = formidable({ multiples: false, keepExtensions: true, maxFileSize: 12 * 1024 * 1024 });
-    form.parse(req, (err, fields, files) => err ? reject(err) : resolve({ fields, files }));
-  });
-}
-function firstValue(v) { return Array.isArray(v) ? v[0] : v; }
-function findUploadedFile(files) {
-  const names = ["image","clothing","clothingImage","file","photo","upload"];
-  for (const name of names) { const v = files[name]; if (!v) continue; if (Array.isArray(v) && v.length) return v[0]; if (v.filepath) return v; }
-  for (const key of Object.keys(files || {})) { const v = files[key]; if (Array.isArray(v) && v.length) return v[0]; if (v && v.filepath) return v; }
-  return null;
-}
-function parseJson(text) {
-  try { return JSON.parse(text); } catch (_) {}
-  const m = String(text || "").match(/\{[\s\S]*\}/);
-  try { return m ? JSON.parse(m[0]) : null; } catch (_) { return null; }
-}
+                      garment.addEventListener("change", (event) => {
+                          const file = event.target.files[0];
 
-async function detectSubject(dataUrl, userPrompt) {
-  const instruction = "Analyze this uploaded image for OBITREND. Classify the primary visible subject as exactly one of: man, woman, child, children, family, group_of_people, object, house. man/woman means one adult; child means one child; children means multiple children; family means a family-style adult/child grouping; group_of_people means multiple non-family people; house means a property/building is the main subject; object means another non-human primary subject. Do not invent subjects. Return ONLY JSON with keys category,count,confidence,summary,visibleClothing,scene,needsGarmentPreservation. Confidence must be 0 to 1. Do not identify anyone. User request: " + (userPrompt || "");
-  const response = await fetch("https://api.openai.com/v1/responses", {
-    method: "POST",
-    headers: { Authorization: "Bearer " + OPENAI_API_KEY, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: DETECTION_MODEL,
-      input: [{ role: "user", content: [{ type: "input_text", text: instruction }, { type: "input_image", image_url: dataUrl, detail: "high" }] }],
-      max_output_tokens: 500
-    })
-  });
-  const raw = await response.text();
-  let apiResult; try { apiResult = JSON.parse(raw); } catch (_) { throw new Error("Automatic subject detection returned an invalid response."); }
-  if (!response.ok) throw new Error(apiResult?.error?.message || "Automatic subject detection failed.");
-  const detected = parseJson(apiResult.output_text);
-  const allowed = new Set(["man","woman","child","children","family","group_of_people","object","house"]);
-  if (!detected || !allowed.has(detected.category)) throw new Error("Automatic subject detection could not classify the image.");
-  detected.count = Number.isFinite(Number(detected.count)) ? Number(detected.count) : 0;
-  detected.confidence = Math.max(0, Math.min(1, Number(detected.confidence) || 0));
-  return detected;
-}
+                              if (!file) {
+                                    return;
+                                        }
 
-const RULES = {
-  man: "Create a realistic adult male subject with natural anatomy, hands, skin and proportions.",
-  woman: "Create a realistic adult female subject with natural anatomy, hands, skin and proportions.",
-  child: "Create one age-appropriate child. Never sexualize the child. Use age-appropriate clothing, pose and styling.",
-  children: "Create the detected children naturally. Keep every child age-appropriate and never sexualize children.",
-  family: "Create a natural family scene matching the detected family structure. Keep adults and children age-appropriate and naturally interacting.",
-  group_of_people: "Create a realistic group matching the detected people. Keep natural spacing, anatomy and plausible activities.",
-  object: "Keep the detected object as the primary subject. Preserve its identity, shape, proportions, materials, colors, markings and distinctive details.",
-  house: "Keep the detected house/property as the primary subject. Preserve architecture, proportions, roof, windows, doors, facade, materials and distinctive details."
-};
+                                            console.log("OBITREND: Photo selected:", file.name);
 
-function buildPrompt(d, userPrompt) {
-  const preservation = d.needsGarmentPreservation ? "If clothing is visible, preserve it as the strict visual source of truth: shape, construction, neckline, sleeves, colors, fabric, seams, graphics, logos, labels, text, stripes, borders and placement. Do not invent belts, waistbands, trims, panels or graphics. Keep the same garment when the subject is a person." : "Preserve the uploaded primary subject as the visual source of truth, including visible identity, proportions, materials, colors and distinctive details.";
-  return [
-    "OBITREND AUTOMATIC PROMPT ENGINE",
-    "Detected category: " + d.category,
-    "Detected count: " + d.count,
-    "Detection summary: " + (d.summary || ""),
-    "Scene: " + (d.scene || ""),
-    "SUBJECT RULE: " + (RULES[d.category] || RULES.object),
-    "REFERENCE PRESERVATION: " + preservation,
-    "USER REQUEST: " + (userPrompt || "Create a photorealistic professional image based on the uploaded reference."),
-    "Generate a photorealistic professional image. Keep the detected subject as the visual priority. Do not silently change the subject category. Do not add people when they are not requested. Use realistic lighting, depth, perspective, materials, shadows and anatomy. Follow requested environment, pose, camera and aspect ratio when supplied."
-  ].join("\n\n");
-}
+                                                if (!file.type.startsWith("image/")) {
+                                                      alert("Please select a JPG, PNG, or WEBP image.");
+                                                            return;
+                                                                }
 
-module.exports = async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
-  if (!OPENAI_API_KEY) return res.status(500).json({ error: "OPENAI_API_KEY is not configured" });
-  let imagePath = null;
-  try {
-    const { fields, files } = await parseForm(req);
-    const uploadedFile = findUploadedFile(files);
-    if (!uploadedFile?.filepath) return res.status(400).json({ error: "No image was uploaded" });
-    imagePath = uploadedFile.filepath;
-    const userPrompt = firstValue(fields.prompt || fields.description || "");
-    const imageBuffer = fs.readFileSync(imagePath);
-    let mimeType = uploadedFile.mimetype || "image/jpeg";
-    if (!/^image\/(png|jpeg|jpg|webp)$/i.test(mimeType)) mimeType = "image/jpeg";
-    const dataUrl = "data:" + mimeType + ";base64," + imageBuffer.toString("base64");
-    console.log("[OBITREND] Automatic detection started");
-    const detection = await detectSubject(dataUrl, userPrompt);
-    const finalPrompt = buildPrompt(detection, userPrompt);
-    const form = new FormData();
-    form.append("model", IMAGE_MODEL);
-    form.append("prompt", finalPrompt);
-    form.append("quality", "high");
-    form.append("size", "auto");
-    form.append("output_format", "png");
-    form.append("n", "1");
-    form.append("image", new Blob([imageBuffer], { type: mimeType }), uploadedFile.originalFilename || "reference.jpg");
-    const response = await fetch("https://api.openai.com/v1/images/edits", { method: "POST", headers: { Authorization: "Bearer " + OPENAI_API_KEY }, body: form });
-    const raw = await response.text();
-    let result; try { result = JSON.parse(raw); } catch (_) { return res.status(502).json({ error: "OpenAI returned an unexpected response" }); }
-    if (!response.ok) return res.status(response.status).json({ error: result?.error?.message || "Image generation failed" });
-    const base64Image = result?.data?.[0]?.b64_json;
-    if (!base64Image) return res.status(502).json({ error: "OpenAI did not return a generated image" });
-    return res.status(200).json({ success: true, imageUrl: "data:image/png;base64," + base64Image, b64_json: base64Image, mimeType: "image/png", detection: { category: detection.category, count: detection.count, confidence: detection.confidence, summary: detection.summary }, promptEngine: true });
-  } catch (error) {
-    console.error("[OBITREND] Auto generation error:", error);
-    return res.status(500).json({ error: error?.message || "Automatic generation failed" });
-  } finally {
-    try { if (imagePath && fs.existsSync(imagePath)) fs.unlinkSync(imagePath); } catch (e) { console.error("[OBITREND] Cleanup error:", e); }
-  }
-};
+                                                                    if (file.size > 12 * 1024 * 1024) {
+                                                                          alert("Image must be smaller than 12 MB.");
+                                                                                return;
+                                                                                    }
+
+                                                                                        const imageURL = URL.createObjectURL(file);
+
+                                                                                            preview.src = imageURL;
+                                                                                                preview.style.display = "block";
+                                                                                                    preview.hidden = false;
+
+                                                                                                        preview.onload = () => {
+                                                                                                              URL.revokeObjectURL(imageURL);
+                                                                                                                  };
+                                                                                                                    });
+                                                                                                                    });
+const generateBtn = document.getElementById("generateBtn");
+
+generateBtn.addEventListener("click", async () => {
+  const garment = document.getElementById("garment");
+
+    if (!garment || !garment.files || !garment.files[0]) {
+        alert("Please upload a clothing image first.");
+            return;
+              }
+
+                const file = garment.files[0];
+
+                const formData = new FormData();
+                formData.append("garment", file);
+                formData.append("model", "realistic fashion model");
+                        formData.append("background", "luxury fashion studio");
+                          formData.append("pose", "standing naturally");
+                            formData.append("style", "professional fashion campaign");
+                              formData.append("extra", "Preserve the exact garment design, color, shape, stitching and details.");
+
+                                generateBtn.disabled = true;
+                                  generateBtn.textContent = "Generating...";
+
+                                    try {
+                                        const response = await fetch("/api/generate", {
+                                              method: "POST",
+                                                    body: formData
+                                                        });
+
+                                                            const data = await response.json();
+
+                                                                if (!response.ok) {
+                                                                      throw new Error(data.error || "Image generation failed.");
+                                                                          }
+
+const preview = document.getElementById("preview");
+
+if (data.image) {
+  preview.src = data.image;
+    preview.style.display = "block";
+
+      // Create download button
+        let downloadBtn = document.getElementById("downloadBtn");
+
+          if (!downloadBtn) {
+              downloadBtn = document.createElement("a");
+                  downloadBtn.id = "downloadBtn";
+                  downloadBtn.textContent = "Download Image";
+                  downloadBtn.download = "OBITREND-fashion-creator.png";
+
+downloadBtn.style.display = "block";
+downloadBtn.style.marginTop = "18px";
+downloadBtn.style.textAlign = "center";
+downloadBtn.style.padding = "14px 24px";
+downloadBtn.style.borderRadius = "12px";
+downloadBtn.style.textDecoration = "none";
+downloadBtn.style.fontSize = "16px";
+downloadBtn.style.fontWeight = "600";
+downloadBtn.style.background = "#111111";
+downloadBtn.style.color = "#ffffff";
+downloadBtn.style.boxShadow = "0 4px 12px rgba(0,0,0,0.18)";
+downloadBtn.style.cursor = "pointer";
+downloadBtn.style.transition = "0.2s";
+
+
+                                                          preview.parentElement.appendChild(downloadBtn);
+                                                            }
+
+                                                              downloadBtn.href = data.image;
+
+                                                              } else if (data.b64_json) {
+
+                                                                const imageData = "data:image/png;base64," + data.b64_json;
+
+                                                                  preview.src = imageData;
+                                                                    preview.style.display = "block";
+
+                                                                      let downloadBtn = document.getElementById("downloadBtn");
+
+                                                                        if (!downloadBtn) {
+                                                                            downloadBtn = document.createElement("a");
+                                                                                downloadBtn.id = "downloadBtn";
+                                                                                    downloadBtn.textContent = "Download Image";
+                                                                                        downloadBtn.download = "obitrend-fashion-image.png";
+
+                                                                                            downloadBtn.style.display = "block";
+                                                                                                downloadBtn.style.marginTop = "15px";
+                                                                                                    downloadBtn.style.textAlign = "center";
+                                                                                                        downloadBtn.style.padding = "12px";
+                                                                                                            downloadBtn.style.borderRadius = "10px";
+                                                                                                                downloadBtn.style.textDecoration = "none";
+                                                                                                                    downloadBtn.style.cursor = "pointer";
+
+                                                                                                                        preview.parentElement.appendChild(downloadBtn);
+                                                                                                                          }
+
+                                                                                                                            downloadBtn.href = imageData;
+
+                                                                                                                            } else {
+                                                                                                                              throw new Error("No generated image was returned.");
+                                                                                                                              }
+                                                                                                                              } catch (error) {
+                                                                                                                                  console.error(error);
+                                                                                                                                      alert("Generation failed: " + error.message);
+                                                                                                                                        } finally {
+                                                                                                                                            generateBtn.disabled = false;
+                                                                                                                                                generateBtn.textContent = "Generate Fashion";
+                                                                                                                                                  }
+                                                                                                                                                  });
