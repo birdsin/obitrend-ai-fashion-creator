@@ -81,7 +81,7 @@ module.exports = async function handler(req, res) {
     const uploadedFile = findUploadedFile(files);
     if (!uploadedFile?.filepath) return res.status(400).json({ error: "No image was uploaded" });
     imagePath = uploadedFile.filepath;
-    const userPrompt = firstValue(fields.prompt || fields.description || "");
+    const userPrompt = [firstValue(fields.prompt || fields.description || ""), firstValue(fields.model || ""), firstValue(fields.background || ""), firstValue(fields.pose || ""), firstValue(fields.style || ""), firstValue(fields.extra || "")].filter(Boolean).join("\n");
     const imageBuffer = fs.readFileSync(imagePath);
     let mimeType = uploadedFile.mimetype || "image/jpeg";
     if (!/^image\/(png|jpeg|jpg|webp)$/i.test(mimeType)) mimeType = "image/jpeg";
