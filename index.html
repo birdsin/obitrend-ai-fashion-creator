@@ -16,7 +16,20 @@ html = """<!doctype html>
 .progress-pill{min-width:76px;text-align:center;background:#fff;border:1px solid #e4e7eb;border-radius:999px;padding:7px 13px;font-size:17px;font-weight:600;color:#4d8fe8;box-shadow:0 3px 10px rgba(0,0,0,.04)}
 .generation-error{display:none;margin-top:18px;color:#b42318;font-size:14px;text-align:center}
 .generation-retry{display:none;margin:12px auto 0;border:0;border-radius:12px;padding:11px 18px;background:#111827;color:#fff;font-weight:700;cursor:pointer}
-.pro{border-color:#806b2c;background:linear-gradient(135deg,#17130a,#0d131d)}.price{font-size:30px;font-weight:900;color:#efd37d}.features{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.features div{border:1px solid #383323;border-radius:10px;padding:9px;color:#cbd3df;font-size:13px}.result{display:none}.result img{width:100%;border-radius:18px}.history{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.history img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:13px}@media(max-width:700px){.grid,.features{grid-template-columns:1fr}.history{grid-template-columns:repeat(2,1fr)}.hero h2{font-size:28px}}
+.pro{border-color:#806b2c;background:linear-gradient(135deg,#17130a,#0d131d)}.price{font-size:30px;font-weight:900;color:#efd37d}.features{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.features div{border:1px solid #383323;border-radius:10px;padding:9px;color:#cbd3df;font-size:13px}.image-gallery-section{background:#fff;color:#111;border-radius:24px;padding:18px;margin:12px 0;box-shadow:0 12px 35px rgba(0,0,0,.08)}
+.image-gallery-section h3{margin:0 0 14px;font-size:20px}
+.image-gallery{columns:2 180px;column-gap:10px}
+.gallery-item{position:relative;display:block;width:100%;margin:0 0 10px;padding:0;border:0;background:none;break-inside:avoid;cursor:pointer;border-radius:16px;overflow:hidden}
+.gallery-item img{display:block;width:100%;height:auto;max-height:560px;object-fit:cover;border-radius:16px;transition:transform .18s ease}
+.gallery-item:active img{transform:scale(.985)}
+.gallery-empty{color:#8a8f98;font-size:13px;margin:10px 0 2px}
+.image-viewer{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.94);padding:54px 14px 28px;align-items:center;justify-content:center;flex-direction:column}
+.image-viewer.open{display:flex}
+.image-viewer>img{max-width:100%;max-height:calc(100vh - 145px);width:auto;height:auto;object-fit:contain;border-radius:16px}
+.viewer-close{position:absolute;top:14px;right:14px;width:44px;height:44px;border:0;border-radius:50%;background:#fff;color:#111;font-size:30px;line-height:1;cursor:pointer}
+.viewer-actions{display:flex;gap:10px;margin-top:16px}
+.viewer-actions button{border:0;border-radius:13px;padding:12px 18px;background:#fff;color:#111;font-weight:800;cursor:pointer}
+@media(max-width:700px){.image-gallery{columns:2 140px;column-gap:8px}.gallery-item{margin-bottom:8px}.image-gallery-section{border-radius:20px;padding:14px}}@media(max-width:700px){.grid,.features{grid-template-columns:1fr}.history{grid-template-columns:repeat(2,1fr)}.hero h2{font-size:28px}}
 </style>
 </head>
 <body>
@@ -57,8 +70,20 @@ html = """<!doctype html>
 <div class="field" style="margin-top:14px"><label>Email for Paystack</label><input id="email" type="email" placeholder="you@example.com"></div>
 <div class="actions"><button class="btn gold" id="proBtn">🔓 Upgrade to OBITREND Pro — ₦15,000/week</button></div><div id="payStatus" class="status"></div></section>
 
-<section class="card result" id="resultCard"><h3>Your Premium Result</h3><img id="resultImg"><div class="actions"><button class="btn gold" id="download">⬇ Download</button><button class="btn dark" id="new2">Create Another</button></div></section>
-<section class="card"><h3>Generation History</h3><div id="history" class="history"></div><p id="empty" class="small">Generated images appear here.</p></section>
+<section class="image-gallery-section" id="imageGallerySection">
+<h3>AI Image Gallery</h3>
+<div id="history" class="image-gallery"></div>
+<p id="empty" class="gallery-empty">Generated images appear here.</p>
+</section>
+
+<div class="image-viewer" id="imageViewer" aria-hidden="true">
+<button class="viewer-close" id="viewerClose" aria-label="Close">×</button>
+<img id="viewerImage" alt="Generated OBITREND image">
+<div class="viewer-actions">
+<button id="viewerDownload">⬇ Download</button>
+<button id="viewerShare">↗ Share</button>
+</div>
+</div>
 <p class="small">OBITREND creates a very large creative space procedurally. It does not falsely claim there are one million real cities or one million real people. Millions of combinations can be produced from model traits, styling, poses, locations, scenes, vehicles and camera directions. For authentic backgrounds, the prompt explicitly requests real-world locations and physically realistic photography; the final accuracy depends on the image model.</p>
 </div>
 
@@ -158,13 +183,59 @@ show(url);finishGenerationCard();$("status").textContent="Done — premium image
 }catch(e){$("status").textContent=e.message;failGenerationCard(e.message);alert("Generation Error:\\n\\n"+e.message)}
 finally{$("generate").disabled=false;$("generate").textContent="✨ Generate Premium Image"}
 }
+let activeGalleryUrl="";
 function show(url){
-$("resultCard").style.display="block";$("resultImg").src=url;
-const x=document.createElement("img");x.src=url;x.onclick=()=>{window.scrollTo({top:$("resultCard").offsetTop-10,behavior:"smooth"});$("resultImg").src=url};$("history").prepend(x);$("empty").style.display="none";
-$("download").onclick=async()=>{try{const r=await fetch(url);const b=await r.blob();const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="obitrend-premium-fashion.png";a.click()}catch{location.href=url}};
-window.scrollTo({top:$("resultCard").offsetTop-10,behavior:"smooth"});
+activeGalleryUrl=url;
+const item=document.createElement("button");
+item.className="gallery-item";
+item.type="button";
+const img=document.createElement("img");
+img.src=url;
+img.alt="Generated OBITREND fashion image";
+img.loading="lazy";
+item.appendChild(img);
+item.onclick=()=>openImageViewer(url);
+$("history").prepend(item);
+$("empty").style.display="none";
+$("imageGallerySection").scrollIntoView({behavior:"smooth",block:"start"});
 }
-$("generate").onclick=generate;$("newBtn").onclick=()=>location.reload();$("new2").onclick=()=>location.reload();
+
+function openImageViewer(url){
+activeGalleryUrl=url;
+$("viewerImage").src=url;
+$("imageViewer").classList.add("open");
+$("imageViewer").setAttribute("aria-hidden","false");
+document.body.style.overflow="hidden";
+}
+
+function closeImageViewer(){
+$("imageViewer").classList.remove("open");
+$("imageViewer").setAttribute("aria-hidden","true");
+document.body.style.overflow="";
+}
+
+async function downloadImage(url){
+try{
+const r=await fetch(url);
+const b=await r.blob();
+const a=document.createElement("a");
+a.href=URL.createObjectURL(b);
+a.download="obitrend-fashion-image.png";
+a.click();
+setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}catch{location.href=url}
+}
+
+$("viewerClose").onclick=closeImageViewer;
+$("imageViewer").onclick=e=>{if(e.target===$("imageViewer"))closeImageViewer()};
+$("viewerDownload").onclick=()=>downloadImage(activeGalleryUrl);
+$("viewerShare").onclick=async()=>{
+try{
+if(navigator.share)await navigator.share({title:"OBITREND AI Fashion Creator",url:activeGalleryUrl});
+else await navigator.clipboard.writeText(activeGalleryUrl);
+}catch{}
+};
+$("generate").onclick=generate;$("newBtn").onclick=()=>location.reload();
 
 $("proBtn").onclick=async()=>{
 const email=$("email").value.trim();if(!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(email)){alert("Enter a valid email address.");return}
