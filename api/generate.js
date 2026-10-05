@@ -113,6 +113,8 @@
                                                                                                                                                                                                                                                                                                           fields.prompt || fields.description || ""
                                                                                                                                                                                                                                                                                                               );
 
+const requestedImageText = firstValue(fields.imageText || "");
+
                                                                                                                                                                                                                                                                                                                   /*
                                                                                                                                                                                                                                                                                                                        * ============================================================
                                                                                                                                                                                                                                                                                                                             * CLOTHING-PRESERVATION PROMPT
@@ -180,6 +182,10 @@
                                                                                                                                                                                                                                                                                                                                                               ${originalPrompt ? `ADDITIONAL USER REQUEST:\n${originalPrompt}` : ""}
 
                                                                                                                                                                                                                                                                                                                                                               The clothing design has priority over stylistic interpretation.
+
+TEXT TO RENDER INSIDE THE GENERATED IMAGE:
+If the user supplied image text, render this exact text clearly and legibly inside the final image: ${requestedImageText ? `"${requestedImageText}"` : "NONE"}
+Do not alter, paraphrase, translate or invent the requested wording. Match the scene composition and use tasteful, professional typography that remains readable.
                                                                                                                                                                                                                                                                                                                                                               When there is a conflict between the requested scene and the
                                                                                                                                                                                                                                                                                                                                                               uploaded garment, preserve the garment design.
 
